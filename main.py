@@ -5,7 +5,7 @@ from postprocessing import view_frame
 from cornerDetection import detect_corners
 
 
-cap = cv2.VideoCapture('buildings1.avi')
+cap = cv2.VideoCapture('buildingsshort.avi')
 
 while(True):
     # Capture frame-by-frame
