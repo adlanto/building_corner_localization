@@ -13,8 +13,9 @@ while(True):
 
     if np.shape(frame) != ():
         gray = process_frame(frame)
-        result = detect_corners(gray)
+        result = detect_corners(gray, frame)
         view_frame(result)
+        cv2.waitKey(500)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
