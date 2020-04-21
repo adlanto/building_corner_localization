@@ -10,7 +10,7 @@ def process_frame(frame: np.ndarray) -> np.ndarray:
     ret, thresh = cv2.threshold(blur, 180, 255, cv2.THRESH_TOZERO_INV)
     cv2.imshow('blurred', thresh)
     return_image = thresh
-    # Volker Ende
+    # Volker Manz Ende
     # Ziel: möglichst viele Punkte am Rande von den Gebäuden / auch braunes rechts
 
     return return_image
