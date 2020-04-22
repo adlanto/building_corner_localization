@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from preprocessing import process_frame
 from postprocessing import view_frame
-from cornerDetection import detect_corners
+from cornerDetection import detect_corners, detect_corners2
 
 
 cap = cv2.VideoCapture('buildingsshort.avi')
@@ -14,6 +14,7 @@ while(True):
     if np.shape(frame) != ():
         gray = process_frame(frame)
         result = detect_corners(gray, frame)
+        result = detect_corners2(gray, frame)
         view_frame(result)
         cv2.waitKey(500)
 
