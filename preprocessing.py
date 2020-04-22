@@ -22,12 +22,12 @@ def process_frame(frame: np.ndarray) -> np.ndarray:
     X1 = cv2.filter2D(gray, -1, F1)
     X2 = cv2.filter2D(gray, -1, F2)
     x_mag = np.sqrt(X1 ** 2 + X2 ** 2)
-    X_mag = np.abs(x_mag) / (3 * 255.0)
+    X_mag = np.uint8(np.abs(x_mag) / (3 * 255.0))
     print(X_mag.shape)
     cv2.imshow('X_mag', X_mag)
 
 
-    return_image = x_mag
+    return_image = X_mag
     # Volker Manz Ende
     # Ziel: möglichst viele Punkte am Rande von den Gebäuden / auch braunes rechts
 
