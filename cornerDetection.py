@@ -1,23 +1,27 @@
 import cv2
 import numpy as np
 
+# Value to be changed
+crop_value_from_top = 230
 
 def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
-
-    result = gray
 
     # # surf = cv2.HARRIS_create(1000)
     # # Find keypoints and descriptors directly
     # kp, des = surf.detectAndCompute(gray, None)
 
+    crop = gray[0:crop_value_from_top]
+    print(crop.shape)
+
     # result = cv2.drawKeypoints(gray, kp, None, (255, 0, 0), 4)
-    dst = cv2.cornerHarris(gray, 2, 3, 0.04)
+    dst = cv2.cornerHarris(crop, 2, 3, 0.04)
 
     # result is dilated for marking the corners, not important
     dst = cv2.dilate(dst, None)
 
+    copy_dst = cv2.copyMakeBorder(dst, 0, image.shape[0]-crop_value_from_top, 0, 0, cv2.BORDER_CONSTANT, 0)
     # Threshold for an optimal value, it may vary depending on the image.
-    image[dst > 0.01 * dst.max()] = [0, 0, 255]
+    image[copy_dst > 0.01 * copy_dst.max()] = [0, 0, 255]
 
     #cv2.imshow('dst', image)
 
@@ -27,7 +31,7 @@ def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
 
 def detect_corners2(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    crop_image = image[0:230]
+    crop_image = image[0:crop_value_from_top]
     blur_image = cv2.bilateralFilter(crop_image, 5, 20, 20)
     canny_image = cv2.Canny(blur_image, 50, 200, 3)
     kernel = kernel = np.ones((30,30),np.uint8)

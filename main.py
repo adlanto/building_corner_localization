@@ -15,11 +15,12 @@ while(True):
     ret, frame = cap.read()
 
     if np.shape(frame) != ():
+        frame = cv2.resize(frame, (640, 480))
         gray = process_frame(frame)
         result = detect_corners(gray, frame)
         result, lines = detect_corners2(gray, frame)
         corners.append(get_building_corners(counter, frame, lines))
-        view_frame(result)
+        view_frame(frame)
         #cv2.waitKey(500)
         counter += 1
     else:
