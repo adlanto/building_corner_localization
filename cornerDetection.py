@@ -36,7 +36,7 @@ def detect_corners2(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
     canny_image = cv2.Canny(blur_image, 50, 200, 3)
     kernel = kernel = np.ones((30,30),np.uint8)
     canny_image = cv2.morphologyEx(canny_image, cv2.MORPH_CLOSE, kernel)
-    #cv2.imshow('canny', canny_image)
+    cv2.imshow('canny', canny_image)
     result = np.copy(image)
     result2 = np.copy(image)
 
@@ -44,7 +44,7 @@ def detect_corners2(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
     #print(hierarchy)
     contours = sorted(contours, key=cv2.contourArea, reverse=True)[:100]
     cv2.drawContours(result2, contours, -1, (0, 255, 0), 3)
-    #cv2.imshow('Contours', result2)
+    cv2.imshow('Contours', result2)
 
     contours_poly = [None]*len(contours)
     bound_rect = [None]*len(contours)
@@ -68,8 +68,8 @@ def detect_corners2(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
     cv2.drawContours(mask, contours, 1, 255, -1)  # Draw filled contour in mask
     out = np.zeros_like(image)  # Extract out the object and place into output image
     out[mask == 255] = image[mask == 255]
-    #cv2.imshow('test', out)
-    #cv2.imshow('Contours', drawing)
+    cv2.imshow('test', out)
+    cv2.imshow('Contours', drawing)
 
     # new_rect = np.ndarray
     # for i, rect in enumerate(bound_rect):
