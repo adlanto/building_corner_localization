@@ -11,7 +11,7 @@ def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
     # kp, des = surf.detectAndCompute(gray, None)
 
     crop = gray[0:crop_value_from_top]
-    print(crop.shape)
+    crop = np.float32(crop)
 
     # result = cv2.drawKeypoints(gray, kp, None, (255, 0, 0), 4)
     dst = cv2.cornerHarris(crop, 2, 3, 0.04)
@@ -19,11 +19,30 @@ def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
     # result is dilated for marking the corners, not important
     dst = cv2.dilate(dst, None)
 
-    copy_dst = cv2.copyMakeBorder(dst, 0, image.shape[0]-crop_value_from_top, 0, 0, cv2.BORDER_CONSTANT, 0)
-    # Threshold for an optimal value, it may vary depending on the image.
-    image[copy_dst > 0.01 * copy_dst.max()] = [0, 0, 255]
+    ret, dst = cv2.threshold(dst, 0.01*dst.max(), 255, 0)
+    dst = np.uint8(dst)
 
-    #cv2.imshow('dst', image)
+    # find centroids
+    ret, labels, stats, centroids = cv2.connectedComponentsWithStats(dst)
+
+    # define the criteria to stop and refine the corners
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.001)
+    corners = cv2.cornerSubPix(gray, np.float32(centroids), (5, 5), (-1, -1), criteria)
+
+    # copy_dst = cv2.copyMakeBorder(dst, 0, image.shape[0]-crop_value_from_top, 0, 0, cv2.BORDER_CONSTANT, 0)
+    # Threshold for an optimal value, it may vary depending on the image.
+
+    #image[copy_dst > 0.01 * copy_dst.max()] = [0, 0, 255]
+
+    # Now draw them
+    res = np.hstack((centroids, corners))
+    res = np.int0(res)
+    try:
+        image[res[:, 1], res[:, 0]] = [0, 0, 255]
+        image[res[:, 3], res[:, 2]] = [0, 255, 0]
+    except:
+        print("A detected keypoint was not part of the image - ignoring point.")
+    cv2.imshow('dst', image)
 
     result = gray
     return result
