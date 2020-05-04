@@ -1,12 +1,39 @@
 import cv2
 import numpy as np
+from sklearn.cluster import AgglomerativeClustering
+import matplotlib.pyplot as plt
 
 # Value to be changed
 crop_value_from_top = 230
 
-def cluster_points_to_buildings():
+def cluster_points_to_buildings(points):
 
-    return
+    # Make horizonal axis more relevant
+    relevance_factor = 1.5
+    for point in points:
+        point[0] = point[0] * relevance_factor
+
+    # Cluster points by distance threshold
+    cluster = AgglomerativeClustering(n_clusters=None, linkage='single', distance_threshold=80)
+    cluster.fit(points)
+
+    # Print Clusters
+    custom_clusters = []
+    colors = ['g.', 'r.', 'b.', 'y.', 'c.']
+    for cclass, color in zip(range(0, 5), colors):
+        Xk = points[cluster.labels_ == cclass]
+        plt.plot(Xk[:, 0], Xk[:, 1], color, alpha=0.3)
+        # Just continue with clusters that contain more than three points
+        if Xk.shape[0] > 3:
+            custom_clusters.append(Xk)
+    plt.plot(points[cluster.labels_ == -1, 0], points[cluster.labels_ == -1, 1], 'k+', alpha=0.1)
+    plt.show()
+
+    custom_clusters = np.array(custom_clusters)
+    print('Returned', custom_clusters.shape[0], 'clusters.')
+    print(custom_clusters)
+
+    return custom_clusters
 
 
 def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
@@ -33,7 +60,7 @@ def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
     # define the criteria to stop and refine the corners
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.001)
     corners = cv2.cornerSubPix(gray, np.float32(centroids), (5, 5), (-1, -1), criteria)
-
+    cluster_points_to_buildings(np.vstack(corners))
     # copy_dst = cv2.copyMakeBorder(dst, 0, image.shape[0]-crop_value_from_top, 0, 0, cv2.BORDER_CONSTANT, 0)
     # Threshold for an optimal value, it may vary depending on the image.
 
@@ -127,11 +154,14 @@ def get_building_corners(counter:int, image: np.ndarray, lines: np.ndarray) -> n
             if x1-5 < x2 < x1+5:
                 vertical_lines.append(line)
 
+    points = []
     for line in vertical_lines:
         for x1, y1, x2, y2 in line:
             # Ignore Lines at the image borders
             if x1 != 0 and x1 != image.shape[0] and x1 != 0 and x1 != image.shape[0]:
                 cv2.line(result, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                points.append(np.array([x1, y1]))
+                points.append(np.array([x2, y2]))
 
     cv2.imshow('Vertical Lines', result)
     #cv2.imwrite('images//image'+str(counter)+'.jpg', result)
