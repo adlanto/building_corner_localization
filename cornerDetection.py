@@ -122,13 +122,16 @@ def get_building_corners(counter:int, image: np.ndarray, lines: np.ndarray) -> n
     # Check if vertical
     for line in lines:
         #print(line)
+        # Check if lines are vertical
         for x1, y1, x2, y2 in line:
             if x1-5 < x2 < x1+5:
                 vertical_lines.append(line)
 
     for line in vertical_lines:
         for x1, y1, x2, y2 in line:
-            cv2.line(result, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            # Ignore Lines at the image borders
+            if x1 != 0 and x1 != image.shape[0] and x1 != 0 and x1 != image.shape[0]:
+                cv2.line(result, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
     cv2.imshow('Vertical Lines', result)
     #cv2.imwrite('images//image'+str(counter)+'.jpg', result)
