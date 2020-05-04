@@ -4,6 +4,11 @@ import numpy as np
 # Value to be changed
 crop_value_from_top = 230
 
+def cluster_points_to_buildings():
+
+    return
+
+
 def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
 
     # # surf = cv2.HARRIS_create(1000)
