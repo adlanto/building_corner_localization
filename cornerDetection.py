@@ -8,7 +8,7 @@ crop_value_from_top = 230
 
 def cluster_points_to_buildings(points):
 
-    # Make horizonal axis more relevant
+    # Make horizonal axis less relevant
     relevance_factor = 1.5
     for point in points:
         point[0] = point[0] * relevance_factor
@@ -22,16 +22,16 @@ def cluster_points_to_buildings(points):
     colors = ['g.', 'r.', 'b.', 'y.', 'c.']
     for cclass, color in zip(range(0, 5), colors):
         Xk = points[cluster.labels_ == cclass]
-        plt.plot(Xk[:, 0], Xk[:, 1], color, alpha=0.3)
+        #plt.plot(Xk[:, 0], Xk[:, 1], color, alpha=0.3)
         # Just continue with clusters that contain more than three points
         if Xk.shape[0] > 3:
             custom_clusters.append(Xk)
-    plt.plot(points[cluster.labels_ == -1, 0], points[cluster.labels_ == -1, 1], 'k+', alpha=0.1)
-    plt.show()
+    #plt.plot(points[cluster.labels_ == -1, 0], points[cluster.labels_ == -1, 1], 'k+', alpha=0.1)
+    #plt.show()
 
     custom_clusters = np.array(custom_clusters)
-    print('Returned', custom_clusters.shape[0], 'clusters.')
-    print(custom_clusters)
+    #print('Returned', custom_clusters.shape[0], 'clusters.')
+    #print(custom_clusters)
 
     return custom_clusters
 
@@ -69,11 +69,13 @@ def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
     # Now draw them
     res = np.hstack((centroids, corners))
     res = np.int0(res)
+    errors = 0
     try:
         image[res[:, 1], res[:, 0]] = [0, 0, 255]
         image[res[:, 3], res[:, 2]] = [0, 255, 0]
     except:
-        print("A detected keypoint was not part of the image - ignoring point.")
+        errors = errors + 1
+        # print("A detected keypoint was not part of the image - ignoring point.")
     cv2.imshow('dst', image)
 
     result = gray

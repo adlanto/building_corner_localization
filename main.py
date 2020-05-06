@@ -6,7 +6,7 @@ from cornerDetection import detect_corners, detect_corners2, get_building_corner
 from cornerTracker import track_corners
 
 
-cap = cv2.VideoCapture('buildings1.avi')
+cap = cv2.VideoCapture('videos/buildings1.avi')
 
 corners = []
 counter = 0
