@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from preprocessing import process_frame
+from preprocessing import preprocess_frame
 from postprocessing import view_frame
 from cornerDetection import detect_corners, detect_corners2, get_building_corners
 from cornerTracker import track_corners
@@ -16,7 +16,7 @@ while(True):
 
     if np.shape(frame) != ():
         frame = cv2.resize(frame, (640, 480))
-        gray = process_frame(frame)
+        gray = preprocess_frame(frame)
         result = detect_corners(gray, frame)
         result, lines = detect_corners2(gray, frame)
         corners.append(get_building_corners(counter, frame, lines))

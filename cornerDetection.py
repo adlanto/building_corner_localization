@@ -22,12 +22,12 @@ def cluster_points_to_buildings(points):
     colors = ['g.', 'r.', 'b.', 'y.', 'c.']
     for cclass, color in zip(range(0, 5), colors):
         Xk = points[cluster.labels_ == cclass]
-        #plt.plot(Xk[:, 0], Xk[:, 1], color, alpha=0.3)
+        plt.plot(Xk[:, 0], Xk[:, 1], color, alpha=0.3)
         # Just continue with clusters that contain more than three points
         if Xk.shape[0] > 3:
             custom_clusters.append(Xk)
-    #plt.plot(points[cluster.labels_ == -1, 0], points[cluster.labels_ == -1, 1], 'k+', alpha=0.1)
-    #plt.show()
+    plt.plot(points[cluster.labels_ == -1, 0], points[cluster.labels_ == -1, 1], 'k+', alpha=0.1)
+    plt.show()
 
     custom_clusters = np.array(custom_clusters)
     #print('Returned', custom_clusters.shape[0], 'clusters.')
@@ -44,9 +44,10 @@ def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
 
     crop = gray[0:crop_value_from_top]
     crop = np.float32(crop)
+    cv2.imshow("Gray", gray)
 
     # result = cv2.drawKeypoints(gray, kp, None, (255, 0, 0), 4)
-    dst = cv2.cornerHarris(crop, 2, 3, 0.04)
+    dst = cv2.cornerHarris(crop, 2, 5, 0.005)
 
     # result is dilated for marking the corners, not important
     dst = cv2.dilate(dst, None)
@@ -83,11 +84,10 @@ def detect_corners(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
 
 
 def detect_corners2(gray: np.ndarray, image: np.ndarray) -> np.ndarray:
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    crop_image = image[0:crop_value_from_top]
-    blur_image = cv2.bilateralFilter(crop_image, 5, 20, 20)
-    canny_image = cv2.Canny(blur_image, 50, 200, 3)
-    kernel = kernel = np.ones((30,30),np.uint8)
+
+    crop_image = gray[0:crop_value_from_top]
+    canny_image = cv2.Canny(crop_image, 50, 200, 3)
+    kernel = np.ones((30,30),np.uint8)
     canny_image = cv2.morphologyEx(canny_image, cv2.MORPH_CLOSE, kernel)
     cv2.imshow('canny', canny_image)
     result = np.copy(image)

@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def process_frame(frame: np.ndarray) -> np.ndarray:
+def preprocess_frame(frame: np.ndarray) -> np.ndarray:
 
     # Volker Anfang: Beliebige Filter einsetzen
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -17,3 +17,4 @@ def process_frame(frame: np.ndarray) -> np.ndarray:
     # Ziel: möglichst viele Punkte am Rande von den Gebäuden / auch braunes rechts
 
     return return_image
+
