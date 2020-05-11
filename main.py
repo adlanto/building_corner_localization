@@ -52,6 +52,8 @@ while(True):
         if not PM.MONO_CAMERA_MODE:
             building_corner_visualization(frame_left.copy(), building_corners_left, 'Right')
 
+    estimate_distances(building_corners_left, building_corners_right)
+
     cv2.waitKey(PM.DURATION_PER_FRAME_MAIN_MS)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
