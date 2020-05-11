@@ -35,9 +35,8 @@ def get_building_corners(image: np.ndarray, lines: np.ndarray) -> np.ndarray:
 def cluster_points_to_buildings(points):
 
     # Make horizontal axis less relevant
-    relevance_factor = 1.5
     for point in points:
-        point[0] = point[0] * relevance_factor
+        point[0] = point[0] * PM.CLUSTER_HARRIS_HORIZONTAL_RELEVANCE
 
     # Cluster points by distance threshold
     cluster = AgglomerativeClustering(n_clusters=None, linkage='single', distance_threshold=80)

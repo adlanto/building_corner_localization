@@ -9,15 +9,15 @@ def debug_visualization(frame, preprocessed_frame, keypoints, hough_lines,
 
     errors = 0
     # Show the image after the preprocess step
-    cv2.imshow('Preprocessed Image', preprocessed_frame)
+    cv2.imshow('Preprocessed Image', np.int8(preprocessed_frame))
 
-    # Houdh visualization
+    # Hough visualization
     if (PM.VISUALIZE_HOUGH):
-        errors = errors + hough_lines_visualization(frame, hough_contours, hough_contours_poly, hough_lines, vertical_lines)
+        errors = errors + hough_lines_visualization(frame.copy(), hough_contours, hough_contours_poly, hough_lines, vertical_lines)
 
     # Harris visualization
     if (PM.VISUALIZE_HARRIS):
-        errors = errors + harris_visualization(frame, keypoints)
+        errors = errors + harris_visualization(frame.copy(), keypoints)
         if (PM.VISUALIZE_HARRIS_CLUSTERS):
             errors = errors + cluster_visualization(keypoint_clusters)
 
@@ -38,16 +38,17 @@ def cluster_visualization(clusters: np.ndarray) -> bool:
 
 def harris_visualization(image: np.ndarray, corners: np.ndarray) -> int:
 
-    res = np.hstack(corners)
-    res = np.int0(res)
     errors = 0
-    try:
-        image[res[:, 1], res[:, 0]] = [0, 0, 255]
-        image[res[:, 3], res[:, 2]] = [0, 255, 0]
-    except:
-        errors = errors + 1
-        # print("A detected keypoint was not part of the image - ignoring point.")
-    cv2.imshow('dst', image)
+    for point in corners:
+        point = np.int0(point)
+        try:
+            image = cv2.circle(image, (point[0], point[1]), radius=3, color=(0, 0, 255), thickness=-1)
+            #image[res[:, 1], res[:, 0]] = [0, 0, 255]
+            #image[res[:, 3], res[:, 2]] = [0, 255, 0]
+        except:
+            errors = errors + 1
+            # print("A detected keypoint was not part of the image - ignoring point.")
+    cv2.imshow('Harris', image)
 
     return errors
 
