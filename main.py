@@ -25,7 +25,7 @@ def process_frame(frame):
     return building_corners
 
 
-cap_left = cv2.VideoCapture('videos/buildings_left.avi')
+cap_left = cv2.VideoCapture('videos/buildings1.avi')
 if not PM.MONO_CAMERA_MODE:
     cap_right = cv2.VideoCapture('videos/buildings_right.avi')
 
@@ -52,7 +52,8 @@ while(True):
         if not PM.MONO_CAMERA_MODE:
             building_corner_visualization(frame_left.copy(), building_corners_left, 'Right')
 
-    estimate_distances(building_corners_left, building_corners_right)
+    if not PM.MONO_CAMERA_MODE:
+        estimate_distances(building_corners_left, building_corners_right)
 
     cv2.waitKey(PM.DURATION_PER_FRAME_MAIN_MS)
 
