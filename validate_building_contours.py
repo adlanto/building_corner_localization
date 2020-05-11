@@ -39,7 +39,8 @@ def cluster_points_to_buildings(points):
         point[0] = point[0] * PM.CLUSTER_HARRIS_HORIZONTAL_RELEVANCE
 
     # Cluster points by distance threshold
-    cluster = AgglomerativeClustering(n_clusters=None, linkage='single', distance_threshold=80)
+    cluster = AgglomerativeClustering(n_clusters=None, linkage='single',
+                                      distance_threshold=PM.CLUSTER_DISTANCE_THRESHOLD)
     cluster.fit(points)
 
     # Print Clusters
@@ -47,8 +48,8 @@ def cluster_points_to_buildings(points):
     colors = ['g.', 'r.', 'b.', 'y.', 'c.']
     for tmp_class, color in zip(range(0, 5), colors):
         x = points[cluster.labels_ == tmp_class]
-        # Just continue with clusters that contain more than three points
-        if x.shape[0] > 3:
+        # Just continue with clusters that contain at least MIN_POINTS_PER_CLUSTER points
+        if x.shape[0] >= PM.MIN_POINTS_PER_CLUSTER:
             custom_clusters.append(x)
 
     custom_clusters = np.array(custom_clusters)

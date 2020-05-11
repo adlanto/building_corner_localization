@@ -3,6 +3,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import PARAMETERS as PM
 
+def building_corner_visualization(frame, building_corners):
+
+    for building_corner in building_corners:
+        for x1, y1, x2, y2 in building_corner:
+            cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+    cv2.imshow('Building Corners', frame)
+
+    return
+
 
 def debug_visualization(frame, preprocessed_frame, keypoints, hough_lines,
                                          hough_contours, hough_contours_poly, vertical_lines, keypoint_clusters) -> int:

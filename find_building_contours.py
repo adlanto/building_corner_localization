@@ -6,7 +6,7 @@ import PARAMETERS as PM
 def detect_keypoints(preprocessed_image: np.ndarray) -> np.ndarray:
 
     # detect Harris corners / keypoints
-    dst = cv2.cornerHarris(preprocessed_image, 2, 5, 0.005)
+    dst = cv2.cornerHarris(preprocessed_image, PM.HARRIS_NEIGHBOURHOOD_SIZE, PM.HARRIS_SOBEL_KERNEL_SIZE, PM.HARRIS_RELEVANCE_PARAM)
 
     # result is dilated for marking the corners
     dst = cv2.dilate(dst, None)
@@ -28,10 +28,9 @@ def detect_keypoints(preprocessed_image: np.ndarray) -> np.ndarray:
 def detect_hough_lines(preprocessed_image: np.ndarray) -> np.ndarray:
 
     uint8_image = preprocessed_image.astype(np.uint8)
-    canny_image = cv2.Canny(uint8_image, 50, 200, 3)
-    kernel = np.ones((30, 30), np.uint8)
+    canny_image = cv2.Canny(uint8_image, PM.CANNY_FIRST_THRESHOLD, PM.CANNY_SECOND_THRESHOLD, PM.CANNY_SOBEL_KERNEL_SIZE)
+    kernel = np.ones((PM.MORPHOLOGY_KERNEL_VERTICAL, PM.MORPHOLOGY_KERNEL_HORIZONTAL), np.uint8)
     canny_image = cv2.morphologyEx(canny_image, cv2.MORPH_CLOSE, kernel)
-    cv2.imshow('canny', canny_image)
 
     contours, hierarchy = cv2.findContours(canny_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours = sorted(contours, key=cv2.contourArea, reverse=True)[:100]
@@ -41,7 +40,7 @@ def detect_hough_lines(preprocessed_image: np.ndarray) -> np.ndarray:
     centers = [None]*len(contours)
     radius = [None]*len(contours)
     for i, c in enumerate(contours):
-        contours_poly[i] = cv2.approxPolyDP(c, 2, True)
+        contours_poly[i] = cv2.approxPolyDP(c, PM.POLYGON_APPROXIMATION_ACCURACY, True)
         bound_rect[i] = cv2.boundingRect(contours_poly[i])
         centers[i], radius[i] = cv2.minEnclosingCircle(contours_poly[i])
 
@@ -68,6 +67,6 @@ def detect_hough_lines(preprocessed_image: np.ndarray) -> np.ndarray:
     #     #if (seed_point)
     #     cv2.floodFill(canny_image, mask, seed_point, 255)
 
-    lines = cv2.HoughLinesP(drawing, rho=1, theta=np.pi/180, threshold=40, minLineLength=5, maxLineGap=20)
+    lines = cv2.HoughLinesP(drawing, PM.HOUGH_RHO, PM.HOUGH_THETA, PM.HOUGH_THRESHOLD, PM.HOUGH_MIN_LINE_LENGTH, PM.HOUGH_MAX_LINE_GAP)
 
     return lines, contours, contours_poly
