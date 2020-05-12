@@ -41,10 +41,10 @@ def estimate_distances(building_corners_left, building_corners_right):
         # y-Achsenabschnitt
         bp = y1 - mp * x1
 
-        xp = (bp-b)/(m-mp)
+        xp = (bp-b1)/(m1-mp)
         yp = mp * xp + bp
 
-        array = array + 1
+        #array = array + 1
 
         print('xpl', xp)
         print('ypl', yp)
@@ -71,7 +71,7 @@ def estimate_distances(building_corners_left, building_corners_right):
         # y-Achsenabschnitt
         bp = y1 - mp * x1
 
-        xp = (bp - b) / (m - mp)
+        xp = (bp - b2) / (m2 - mp)
         yp = mp * xp + bp
 
         array = array + 1
