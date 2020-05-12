@@ -16,7 +16,8 @@ def estimate_distances(building_corners_left, building_corners_right):
     # 5. Mit Hilfe des Abstandes der beiden Schnittpunkte auf Distanz schließen
 
     distances = {}
-    # 1.
+
+# 1.
     # Bildgrößen
     x = PM.RESIZED_FRAME_SIZE[0]
     y = PM.RESIZED_FRAME_SIZE[1]
@@ -28,7 +29,7 @@ def estimate_distances(building_corners_left, building_corners_right):
     # Epipolgerade links
     yel = m1 * x + b1
 
-    # 2.
+# 2.
     # Punktgerade mit Rückgabe des Schnittpunktes
     for array in building_corners_left:
 
@@ -51,7 +52,7 @@ def estimate_distances(building_corners_left, building_corners_right):
 
     return xp, yp
 
-    # 3.
+# 3.
     # Epipolgerade für rechts
     # Steigung Epipolgerade links
     m2 = -(x*(2/3))/(y/2)
@@ -81,7 +82,7 @@ def estimate_distances(building_corners_left, building_corners_right):
 
     return xp, yp
 
-
+# 5.
     # Parameter
     f = 5 * 10**-3  # Brennweite
     x = 1  # Abstand der beiden Kameras
