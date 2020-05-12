@@ -2,7 +2,7 @@
 import numpy as np
 
 # General Parameters
-DURATION_PER_FRAME_MAIN_MS = 2000
+DURATION_PER_FRAME_MAIN_MS = 500
 MONO_CAMERA_MODE = True
 
 # Parameters for visualization

@@ -4,6 +4,16 @@ import PARAMETERS as PM
 
 def estimate_distances(building_corners_left, building_corners_right):
 
+    # buildings_corners = list(lines)
+    # lines = list((x1, y1, x2, y2))
+
+    # Volker:
+    # 1. Berechnung der Fluchtgeraden -> Richtung Bildmittelpunkt ins Unendliche
+    # 2. Schnittpunkt zwischen Building Corners Left (Linien) und Fluchtgeraden
+    # 3. Epipolargerade für zweite Kamera aufstellen
+    # 4. Schnittpunkt zwischen Building Corners Right (Linien) und Epipolargeraden
+    # 5. Mit Hilfe des Abstandes der beiden Schnittpunkte auf Distanz schließen
+
     distances = {}
 
     # Parameter
