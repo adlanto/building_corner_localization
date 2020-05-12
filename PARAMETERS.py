@@ -3,7 +3,7 @@ import numpy as np
 
 # General Parameters
 DURATION_PER_FRAME_MAIN_MS = 500
-MONO_CAMERA_MODE = True
+MONO_CAMERA_MODE = False
 
 # Parameters for visualization
 VISUALIZE_BUILDING_CORNERS = True
