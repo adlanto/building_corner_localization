@@ -22,11 +22,11 @@ def estimate_distances(building_corners_left, building_corners_right):
     y = PM.RESIZED_FRAME_SIZE[1]
     # y = m * x + b
 
-    # Steigung Epipolgerade
-    m = (x/2)/(y/3)
-    b = y/2
-    # Epipolgerade
-    ye = m * x + b
+    # Steigung Epipolgerade links
+    m1 = (x/3)/(y/2)
+    b1 = y/2
+    # Epipolgerade links
+    yel = m1 * x + b1
 
     # 2.
     # Punktgerade mit Rückgabe des Schnittpunktes
@@ -37,7 +37,7 @@ def estimate_distances(building_corners_left, building_corners_right):
         y1 = building_corners_left[1]
         y2 = building_corners_left[3]
         # Steigung Punktepaar
-        mp =(y2 - y1) / (x2 - x1)
+        mp = (y2 - y1) / (x2 - x1)
         # y-Achsenabschnitt
         bp = y1 - mp * x1
 
@@ -46,8 +46,38 @@ def estimate_distances(building_corners_left, building_corners_right):
 
         array = array + 1
 
-        print('xp', xp)
-        print('yp', yp)
+        print('xpl', xp)
+        print('ypl', yp)
+
+    return xp, yp
+
+    # 3.
+    # Epipolgerade für rechts
+    # Steigung Epipolgerade links
+    m2 = -(x*(2/3))/(y/2)
+    b2 = y/2
+    # Epipolgerade rechts
+    yer = m2 * x + b2
+
+    # 4.
+    # Punktgerade mit Rückgabe des Schnittpunktes
+    for array in building_corners_right:
+        x1 = building_corners_right[0]
+        x2 = building_corners_right[2]
+        y1 = building_corners_right[1]
+        y2 = building_corners_right[3]
+        # Steigung Punktepaar
+        mp = (y2 - y1) / (x2 - x1)
+        # y-Achsenabschnitt
+        bp = y1 - mp * x1
+
+        xp = (bp - b) / (m - mp)
+        yp = mp * xp + bp
+
+        array = array + 1
+
+        print('xpr', xp)
+        print('ypr', yp)
 
     return xp, yp
 
