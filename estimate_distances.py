@@ -22,11 +22,11 @@ def estimate_distances(building_corners_left, building_corners_right):
     p = 3.75 * 10**-6  # Pixelgröße
 
     # Calculation of the distance
-    xl = 0  # Pixelanzahl der linken Kamera
+    xl = PM.RESIZED_FRAME_SIZE  # Pixelanzahl der linken Kamera         PM.RESIZED_FRAME_SIZE = (640, 480)
     xr = 0  # Pixelanzahl der rechten Kamera
 
-    for i in range(1, np.array + 1):
-        d = (f * x) / (xl - xr)
-        print(d)
+    # for i in range(1, 1):
+    #     d = (f * x) / (xl - xr)
+    #     print(d)
 
     return distances
