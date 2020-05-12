@@ -3,7 +3,8 @@ import PARAMETERS as PM
 
 
 def estimate_distances(building_corners_left, building_corners_right):
-    print(building_corners_left)
+    print('l', building_corners_left)
+    print('r', building_corners_right)
 
     # buildings_corners = list(lines)
     # lines = list((x1, y1, x2, y2))
@@ -24,63 +25,63 @@ def estimate_distances(building_corners_left, building_corners_right):
     # y = m * x + b
 
     # Steigung Epipolgerade links
-    m1 = (x/3)/(y/2)
-    b1 = y/2
+    m1l = (x/3)/(y/2)
+    b1l = y/2
     # Epipolgerade links
-    yel = m1 * x + b1
+    yel = m1l * x + b1l
 
 # 2.
     # Punktgerade mit Rückgabe des Schnittpunktes
     for array in building_corners_left:
 
-        x1 = building_corners_left[0]
-        x2 = building_corners_left[2]
-        y1 = building_corners_left[1]
-        y2 = building_corners_left[3]
+        x1l = building_corners_left[0]
+        x2l = building_corners_left[2]
+        y1l = building_corners_left[1]
+        y2l = building_corners_left[3]
         # Steigung Punktepaar
-        mp = (y2 - y1) / (x2 - x1)
+        mpl = (y2l - y1l) / (x2l - x1l)
         # y-Achsenabschnitt
-        bp = y1 - mp * x1
+        bpl = y1l - mpl * x1l
 
-        xp = (bp-b1)/(m1-mp)
-        yp = mp * xp + bp
+        xpl = (bpl-b1l)/(m1l-mpl)
+        ypl = mpl * xpl + bpl
 
-        #array = array + 1
+        array = array + 1
 
-        print('xpl', xp)
-        print('ypl', yp)
+        print('xpl', xpl)
+        print('ypl', ypl)
 
-    return xp, yp
+    return xpl, ypl
 
 # 3.
     # Epipolgerade für rechts
     # Steigung Epipolgerade links
-    m2 = -(x*(2/3))/(y/2)
-    b2 = y/2
+    m2r = -(x*(2/3))/(y/2)
+    b2r = y/2
     # Epipolgerade rechts
     yer = m2 * x + b2
 
     # 4.
     # Punktgerade mit Rückgabe des Schnittpunktes
     for array in building_corners_right:
-        x1 = building_corners_right[0]
-        x2 = building_corners_right[2]
-        y1 = building_corners_right[1]
-        y2 = building_corners_right[3]
+        x1r = building_corners_right[0]
+        x2r = building_corners_right[2]
+        y1r = building_corners_right[1]
+        y2r = building_corners_right[3]
         # Steigung Punktepaar
-        mp = (y2 - y1) / (x2 - x1)
+        mpr = (y2r - y1r) / (x2r - x1r)
         # y-Achsenabschnitt
-        bp = y1 - mp * x1
+        bpr = y1r - mp * x1r
 
-        xp = (bp - b2) / (m2 - mp)
-        yp = mp * xp + bp
+        xpr = (bpr - b2r) / (m2r - mpr)
+        ypr = mpr * xpr + bpr
 
         array = array + 1
 
-        print('xpr', xp)
-        print('ypr', yp)
+        print('xpr', xpr)
+        print('ypr', ypr)
 
-    return xp, yp
+    return xpr, ypr
 
 # 5.
     # Parameter
