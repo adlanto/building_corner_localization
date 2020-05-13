@@ -30,31 +30,9 @@ def estimate_distances(building_corners_left, building_corners_right):
     # Epipolgerade links
     yel = m1l * x + b1l
 
+
 # 2.
-    # Punktgerade mit Rückgabe des Schnittpunktes
-    for array in building_corners_left:
-
-        x1l = building_corners_left[0]
-        x2l = building_corners_left[2]
-        y1l = building_corners_left[1]
-        y2l = building_corners_left[3]
-        # Steigung Punktepaar
-        mpl = (y2l - y1l) / (x2l - x1l)
-        # y-Achsenabschnitt
-        bpl = y1l - mpl * x1l
-
-        xpl = (bpl-b1l)/(m1l-mpl)
-        ypl = mpl * xpl + bpl
-
-        array = array + 1
-
-        print('xpl', xpl)
-        print('ypl', ypl)
-
-    return xpl, ypl
-
-# 3.
-    # Epipolgerade für rechts
+    # Epipolgerade für links
     # Steigung Epipolgerade links
     m2r = -(x*(2/3))/(y/2)
     b2r = y/2
