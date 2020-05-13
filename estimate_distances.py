@@ -37,7 +37,7 @@ def estimate_distances(building_corners_left, building_corners_right):
     m2r = -(x*(2/3))/(y/2)
     b2r = y/2
     # Epipolgerade rechts
-    yer = m2 * x + b2
+    yer = m2r * x + b2r
 
     # 4.
     # Punktgerade mit Rückgabe des Schnittpunktes
