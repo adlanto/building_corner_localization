@@ -63,25 +63,38 @@ def estimate_distances(building_corners_left, building_corners_right):
 
     # 4.
     # Punktgerade mit Rückgabe des Schnittpunktes
-    for array in building_corners_right:
-        x1r = building_corners_right[0]
-        x2r = building_corners_right[2]
-        y1r = building_corners_right[1]
-        y2r = building_corners_right[3]
+    n = 0
+    for n in range(len(building_corners_left)):
+        m = building_corners_left[n]
+        print('m =', m)
+        # print('m1 =', m[0])
+
+        x1l = m[0]
+        x2l = m[2]
+        y1l = m[1]
+        y2l = m[3]
+
+        print('x1l =', x1l)
+        print('x2l =', x2l)
+        print('y1l =', y1l)
+        print('y2l =', y2l)
+
         # Steigung Punktepaar
-        mpr = (y2r - y1r) / (x2r - x1r)
+        if (x2l - x1l) == 0:
+            mpl = 0
+        else:
+            mpl = (y2l - y1l) / (x2l - x1l)
+            break
+
         # y-Achsenabschnitt
-        bpr = y1r - mp * x1r
+        bpl = y1l - mpl * x1l
 
-        xpr = (bpr - b2r) / (m2r - mpr)
-        ypr = mpr * xpr + bpr
+        xpl = (bpl - b1l) / (m1l - mpl)
+        ypl = mpl * xpl + bpl
 
-        array = array + 1
-
-        print('xpr', xpr)
-        print('ypr', ypr)
-
-    return xpr, ypr
+        print()
+        print('xpl =', xpl, '; ypl =', ypl)
+        print()
 
 # 5.
     # Parameter
