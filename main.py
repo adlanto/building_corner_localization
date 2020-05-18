@@ -3,7 +3,7 @@ import numpy as np
 from preprocess_frame import preprocess_frame
 import PARAMETERS as PM
 from find_building_contours import detect_keypoints, detect_hough_lines
-from validate_building_contours import get_building_corners, cluster_points_to_buildings
+from validate_building_contours import get_building_corners, cluster_points_to_buildings, find_external_contours
 from visualization import debug_visualization, building_corner_visualization
 from estimate_distances import estimate_distances
 
@@ -17,7 +17,7 @@ def process_frame(frame):
     hough_lines, hough_contours, hough_contours_poly = detect_hough_lines(preprocessed_frame.copy())
     vertical_lines, hough_lines_as_points = get_building_corners(frame.copy(), hough_lines.copy())
     keypoint_clusters = cluster_points_to_buildings(keypoints.copy())
-    building_corners = vertical_lines  # will be replaced by validation function
+    building_corners = find_external_contours(keypoint_clusters.copy(), vertical_lines.copy())
     if (PM.DEBUG_VISUALIZATION):
         errors = debug_visualization(frame.copy(), preprocessed_frame.copy(), keypoints, hough_lines,
                                      hough_contours, hough_contours_poly, vertical_lines, keypoint_clusters)
