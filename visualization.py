@@ -87,7 +87,11 @@ def hough_lines_visualization(image: np.ndarray, contours, contours_poly, lines,
     cv2.imshow('Contours_Only', empty_image)
     cv2.imshow('Contours', image)
 
-    return 0
+    return True
 
+
+def birds_eye_map(relative_distances):
+
+    return
 
 
