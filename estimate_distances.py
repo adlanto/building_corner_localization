@@ -3,8 +3,8 @@ import PARAMETERS as PM
 
 
 def estimate_distances(building_corners_left, building_corners_right):
-    # print('l =', building_corners_left)
-    # print('r =', building_corners_right)
+    #print('l =', building_corners_left)
+    #print('r =', building_corners_right)
 
     # buildings_corners = list(lines)
     # lines = list((x1, y1, x2, y2))
@@ -34,7 +34,7 @@ def estimate_distances(building_corners_left, building_corners_right):
 # 2.
     # Punktgerade mit Rückgabe des Schnittpunktes
     l = len(building_corners_left)
-    # print(l)
+    #print(l)
 
     for n in range(0, l):
         # print(building_corners_left)
@@ -68,9 +68,9 @@ def estimate_distances(building_corners_left, building_corners_right):
         xpl = (bpl - b1l) / (m1l - mpl)
         ypl = mpl * xpl + bpl
 
-        print()
-        print('xpl =', xpl, '; ypl =', ypl)
-        print()
+        #print()
+        #print('xpl =', xpl) #, '; ypl =', ypl)
+        #print()
 
 # 3. RECHTE SEITE
     # Epipolgerade für rechts
@@ -117,22 +117,26 @@ def estimate_distances(building_corners_left, building_corners_right):
         xpr = (bpr - b2r) / (m2r - mpr)
         ypr = mpr * xpr + bpr
 
-        print()
-        print('xpr =', xpr, '; ypr =', ypr)
-        print()
+        #print()
+        #print('xpr =', xpr) # , '; ypr =', ypr)
+        #print()
+
+
+
 
 # 5.
     # Parameter
     f = 5 * 10**-3  # Brennweite
     x = 1  # Abstand der beiden Kameras
-    p = 3.75 * 10**-6  # Pixelgröße
+    p = 3.75 * 10**-7  # Pixelgröße
 
     # Calculation of the distance
-    xl = PM.RESIZED_FRAME_SIZE  # Pixelanzahl der linken Kamera         PM.RESIZED_FRAME_SIZE = (640, 480)
-    xr = 0  # Pixelanzahl der rechten Kamera
+    xl = xpl  # Pixelanzahl der linken Kamera         PM.RESIZED_FRAME_SIZE = (640, 480)
+    xr = xpr  # Pixelanzahl der rechten Kamera
 
-    # for i in range(1, 1):
-    #     d = (f * x) / (xl - xr)
-    #     print(d)
+
+    d = (f * x) / (abs(xl - xr) * p)
+    distances = round(d, 3)
+    print('d = ', distances)
 
     return distances
