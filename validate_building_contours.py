@@ -62,7 +62,7 @@ def get_corresponding_harris_line(hough_line, corner_lines):
     th = PM.HOUGH_HARRIS_LINES_DIST_THRESHOLD
     for harris_line in corner_lines:
         harris_calculated_y = hough_line[0] * harris_line[0] + harris_line[1]
-        print(harris_calculated_y, '?=', hough_line[0])
+        # print('Difference:', harris_calculated_y-hough_line[0])
         if hough_line[1] - th <= harris_calculated_y <= hough_line[1]:
             harris_calculated_y = hough_line[2] * harris_line[0] + harris_line[1]
             if hough_line[3] - th <= harris_calculated_y <= hough_line[3]:
@@ -73,7 +73,7 @@ def get_corresponding_harris_line(hough_line, corner_lines):
 
 def create_cluster_outer_line(corner, sorted_cluster):
 
-    th = PM.BUILDING_CORNERS_HARRIS_THRESHOLD
+    th = PM.HOUGH_HARRIS_LINES_DIST_THRESHOLD
     corner_points_x = [corner[0]]
     corner_points_y = [corner[1]]
 
@@ -139,10 +139,10 @@ def find_external_contours(clusters, vertical_hough_lines):
     for hough_line in vertical_hough_lines:
         success = get_corresponding_harris_line(hough_line[0], corner_lines)
         if success:
-            external_contour_lines.append(hough_line[0])
+            external_contour_lines.append(hough_line)
 
     # print(external_contour_lines)
 
-    external_contour_lines = vertical_hough_lines
+    # external_contour_lines = vertical_hough_lines
     return external_contour_lines
 
