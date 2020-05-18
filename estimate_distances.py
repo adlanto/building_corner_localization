@@ -125,17 +125,9 @@ def estimate_distances(building_corners_left, building_corners_right):
 
 
 # 5.
-    # Parameter
-    f = 5 * 10**-3  # Brennweite
-    x = 1  # Abstand der beiden Kameras
-    p = 3.75 * 10**-7  # Pixelgröße
-
     # Calculation of the distance
-    xl = xpl  # Pixelanzahl der linken Kamera         PM.RESIZED_FRAME_SIZE = (640, 480)
-    xr = xpr  # Pixelanzahl der rechten Kamera
 
-
-    d = (f * x) / (abs(xl - xr) * p)
+    d = (PM.f * PM.x) / (abs(xpl - xpr) * PM.p)
     distances = round(d, 3)
     print('d = ', distances)
 
