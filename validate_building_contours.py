@@ -143,6 +143,6 @@ def find_external_contours(clusters, vertical_hough_lines):
 
     # print(external_contour_lines)
 
-    # external_contour_lines = vertical_hough_lines
+    external_contour_lines = vertical_hough_lines
     return external_contour_lines
 
