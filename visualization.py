@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import PARAMETERS as PM
 
+
 def building_corner_visualization(frame, building_corners, name):
 
     for building_corner in building_corners:
