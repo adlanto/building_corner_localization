@@ -36,6 +36,7 @@ def estimate_distances(building_corners_left, building_corners_right):
     l = len(building_corners_left)
     #print(l)
 
+
     for n in range(0, l):
         # print(building_corners_left)
         m = building_corners_left[n]
@@ -55,10 +56,6 @@ def estimate_distances(building_corners_left, building_corners_right):
             y1l = m[0, 2]
             y2l = m[0, 3]
 
-            # print('x1l =', x1l)
-            # print('x2l =', x2l)
-            # print('y1l =', y1l)
-            # print('y2l =', y2l)
 
             # Steigung Punktepaar
             if (x2l - x1l) == 0:
@@ -73,81 +70,82 @@ def estimate_distances(building_corners_left, building_corners_right):
             xpl = (bpl - b1l) / (m1l - mpl)
             ypl = mpl * xpl + bpl
 
-        #print()
-        print('xpl =', xpl) #, '; ypl =', ypl)
-        #print()
+
+            #print()
+            print('xpl =', xpl) #, '; ypl =', ypl)
+            #print()
 
 # 3. RECHTE SEITE
-    # Epipolgerade für rechts
-    # Steigung Epipolgerade rechts
-    m2r = (y / 2) / (((2 / 3) * 640) - 640)
-    b2r = -(y - m2r * x)
-    # Epipolgerade rechts
-    yer = m2r * x + b2r
+            # Epipolgerade für rechts
+            # Steigung Epipolgerade rechts
+            m2r = (y / 2) / (((2 / 3) * 640) - 640)
+            b2r = -(y - m2r * x)
+            # Epipolgerade rechts
+            yer = m2r * x + b2r
 
 # 4.
-    # Punktgerade mit Rückgabe des Schnittpunktes
-    r = len(building_corners_right)
-    # print(r)
+            # Punktgerade mit Rückgabe des Schnittpunktes
+            r = len(building_corners_right)
+            # print(r)
 
-    for n in range(0, r):
-        # print(building_corners_right)
-        m = building_corners_right[n]
-        # print('m=', building_corners_right[n])
-
-        # m = building_corners_left[n]
-        # print('m =', m)
-        # print('m1 =', m[0]
-        if len(m) == 0:
-            xpr = -1
+            for k in range(0, r):
+                # print(building_corners_right)
+                n = building_corners_right[k]
 
 
-        else:
-            x1r = m[0, 0]
-            x2r = m[0, 2]
-            y1r = m[0, 1]
-            y2r = m[0, 3]
-
-            # print('x1r =', x1r)
-            # print('x2r =', x2r)
-            # print('y1r =', y1r)
-            # print('y2r =', y2r)
-
-            # Steigung Punktepaar
-            if (x2r - x1r) == 0:
-                mpr = 0
-            else:
-                mpr = (y2r - y1r) / (x2r - x1r)
+                if len(n) == 0:
+                    xpr = -1
 
 
-            # y-Achsenabschnitt
-            bpr = y1r - mpr * x1r
+                else:
+                    x1r = n[0, 0]
+                    x2r = n[0, 2]
+                    y1r = n[0, 1]
+                    y2r = n[0, 3]
 
-            xpr = (bpr - b2r) / (m2r - mpr)
-            ypr = mpr * xpr + bpr
+                    # Steigung Punktepaar
+                    if (x2r - x1r) == 0:
+                        mpr = 0
+                    else:
+                        mpr = (y2r - y1r) / (x2r - x1r)
 
-        #print()
-        #print('xpr =', xpr) # , '; ypr =', ypr)
-        #print()
+
+                    # y-Achsenabschnitt
+                    bpr = y1r - mpr * x1r
+
+                    xpr = (bpr - b2r) / (m2r - mpr)
+                    ypr = mpr * xpr + bpr
+
+                    #print()
+                    print('xpr =', xpr) # , '; ypr =', ypr)
+                    #print()
 
 
 
 
-# 5.
-    # Calculation of the distance
-    if (xpl != -1) & (xpr != -1):
-        d = (PM.f * PM.x) / (abs(xpl - abs(xpr)) * PM.p)
-        distances = round(d, 3)
+
+# 5. Calculation of the distance
 
 
-    else:
-        distances = 'no distance'
+                    if (xpl != -1) & (xpr != -1):
+                        d = (PM.f * PM.x) / (abs(xpl- abs(xpr)) * PM.p)
+                        distances = round(d, 3)
 
-    print('d = ', distances)
+
+                    else:
+                        distances = 'no distance'
+
+                    #print('d = ', distances)
 
 # 6. Relative Distanzen x,y
 
-    #x_rel = (xpl-xpr)
+                    x_rel = abs(xpl-xpr)
+                    y_rel = np.sqrt(distances**2 - x_rel**2)
+
+                    print()
+                    print('x_real = ', x_rel)
+                    print('y_rel', y_rel)
+                    print()
 
 
     return distances
