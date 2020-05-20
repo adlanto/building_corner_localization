@@ -3,8 +3,8 @@ import PARAMETERS as PM
 
 
 def estimate_distances(building_corners_left, building_corners_right):
-    #print('l =', building_corners_left)
-    #print('r =', building_corners_right)
+    print('l =', building_corners_left)
+    print('r =', building_corners_right)
 
     # buildings_corners = list(lines)
     # lines = list((x1, y1, x2, y2))
@@ -45,31 +45,36 @@ def estimate_distances(building_corners_left, building_corners_right):
         # print('m =', m)
         # print('m1 =', m[0])
 
-        x1l = m[0, 0]
-        x2l = m[0, 1]
-        y1l = m[0, 2]
-        y2l = m[0, 3]
+        if len(m) == 0:
+            xpl = -1
 
-        # print('x1l =', x1l)
-        # print('x2l =', x2l)
-        # print('y1l =', y1l)
-        # print('y2l =', y2l)
 
-        # Steigung Punktepaar
-        if (x2l - x1l) == 0:
-            mpl = 0
         else:
-            mpl = (y2l - y1l) / (x2l - x1l)
+            x1l = m[0, 0]
+            x2l = m[0, 1]
+            y1l = m[0, 2]
+            y2l = m[0, 3]
+
+            # print('x1l =', x1l)
+            # print('x2l =', x2l)
+            # print('y1l =', y1l)
+            # print('y2l =', y2l)
+
+            # Steigung Punktepaar
+            if (x2l - x1l) == 0:
+                mpl = 0
+            else:
+                mpl = (y2l - y1l) / (x2l - x1l)
 
 
-        # y-Achsenabschnitt
-        bpl = y1l - mpl * x1l
+            # y-Achsenabschnitt
+            bpl = y1l - mpl * x1l
 
-        xpl = (bpl - b1l) / (m1l - mpl)
-        ypl = mpl * xpl + bpl
+            xpl = (bpl - b1l) / (m1l - mpl)
+            ypl = mpl * xpl + bpl
 
         #print()
-        #print('xpl =', xpl) #, '; ypl =', ypl)
+        print('xpl =', xpl) #, '; ypl =', ypl)
         #print()
 
 # 3. RECHTE SEITE
@@ -93,29 +98,33 @@ def estimate_distances(building_corners_left, building_corners_right):
         # m = building_corners_left[n]
         # print('m =', m)
         # print('m1 =', m[0]
+        if len(m) == 0:
+            xpr = -1
 
-        x1r = m[0, 0]
-        x2r = m[0, 2]
-        y1r = m[0, 1]
-        y2r = m[0, 3]
 
-        # print('x1r =', x1r)
-        # print('x2r =', x2r)
-        # print('y1r =', y1r)
-        # print('y2r =', y2r)
-
-        # Steigung Punktepaar
-        if (x2r - x1r) == 0:
-            mpr = 0
         else:
-            mpr = (y2r - y1r) / (x2r - x1r)
+            x1r = m[0, 0]
+            x2r = m[0, 2]
+            y1r = m[0, 1]
+            y2r = m[0, 3]
+
+            # print('x1r =', x1r)
+            # print('x2r =', x2r)
+            # print('y1r =', y1r)
+            # print('y2r =', y2r)
+
+            # Steigung Punktepaar
+            if (x2r - x1r) == 0:
+                mpr = 0
+            else:
+                mpr = (y2r - y1r) / (x2r - x1r)
 
 
-        # y-Achsenabschnitt
-        bpr = y1r - mpr * x1r
+            # y-Achsenabschnitt
+            bpr = y1r - mpr * x1r
 
-        xpr = (bpr - b2r) / (m2r - mpr)
-        ypr = mpr * xpr + bpr
+            xpr = (bpr - b2r) / (m2r - mpr)
+            ypr = mpr * xpr + bpr
 
         #print()
         #print('xpr =', xpr) # , '; ypr =', ypr)
@@ -126,9 +135,19 @@ def estimate_distances(building_corners_left, building_corners_right):
 
 # 5.
     # Calculation of the distance
+    if (xpl != -1) & (xpr != -1):
+        d = (PM.f * PM.x) / (abs(xpl - abs(xpr)) * PM.p)
+        distances = round(d, 3)
 
-    d = (PM.f * PM.x) / (abs(xpl - xpr) * PM.p)
-    distances = round(d, 3)
+
+    else:
+        distances = 'no distance'
+
     print('d = ', distances)
+
+# 6. Relative Distanzen x,y
+
+    #x_rel = (xpl-xpr)
+
 
     return distances
