@@ -131,4 +131,4 @@ def estimate_distances(building_corners_left, building_corners_right):
     distances = round(d, 3)
     print('d = ', distances)
 
-    return distances
+    return xpr, ypr
