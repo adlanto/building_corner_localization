@@ -172,7 +172,7 @@ def birds_eye_map(x_array, y_array):
 
     # Status Information
     status_text = 'Number of detected building corners: ' + str(len(x_array))
-    cv2.putText(map, status_text, (10, 20), cv2.FONT_ITALIC, 0.05 * scale, (0, 0, 0), 1)
+    cv2.putText(map, status_text, (10, 20), cv2.FONT_ITALIC, 0.05 * scale, (0, 0, 0), 2)
 
 
     # ***** SHOW MAP *****
