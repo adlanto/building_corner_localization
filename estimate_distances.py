@@ -3,8 +3,20 @@ import PARAMETERS as PM
 
 
 def estimate_distances(building_corners_left, building_corners_right):
-    print('l =', building_corners_left)
-    print('r =', building_corners_right)
+    #print('l =', building_corners_left)
+    #print('r =', building_corners_right)
+
+    # 5. Zuordnung Kante zu Kamera 1 und Kamera 2
+
+
+    map_lines = {}
+    for l, l_lines in enumerate(building_corners_left):
+        euclidean_distances = []
+        for r_lines in building_corners_right:
+            euclidean_distances.append(np.sqrt((l_lines[0, 0] - r_lines[0, 0])**2 + (l_lines[0, 2] - r_lines[0, 2])**2))
+        map_lines[l] = np.argmin(euclidean_distances)
+        #print(euclidean_distances)
+    #print(map_lines)
 
     # buildings_corners = list(lines)
     # lines = list((x1, y1, x2, y2))
@@ -20,132 +32,121 @@ def estimate_distances(building_corners_left, building_corners_right):
 
 # 1.
     # Bildgrößen
-    x = PM.RESIZED_FRAME_SIZE[0]
-    y = PM.RESIZED_FRAME_SIZE[1]
+    x_imagesize = PM.RESIZED_FRAME_SIZE[0]
+    y_imagesize = PM.RESIZED_FRAME_SIZE[1]
     # y = m * x + b
 
     # Epipolargerade für links
     # Steigung Epipolgerade links
-    m1l = (3/2)*(y/x)
-    b1l = -(y-m1l*x)
+    m1l = (3 / 2) * (y_imagesize / x_imagesize)
+    b1l = - (y_imagesize - m1l * x_imagesize)
     # Epipolgerade links
-    yel = m1l * x + b1l
+    yel = m1l * x_imagesize + b1l
 
 # 2.
     # Punktgerade mit Rückgabe des Schnittpunktes
-    l = len(building_corners_left)
+    # l = len(building_corners_left)
     #print(l)
 
+    left_intersections = []
+    for left_cornerline in building_corners_left:
 
-    for n in range(0, l):
-        # print(building_corners_left)
-        m = building_corners_left[n]
-        # print('m=', building_corners_left[n])
-
-        # m = building_corners_left[n]
-        # print('m =', m)
-        # print('m1 =', m[0])
-
-        if len(m) == 0:
-            xpl = -1
+        #
+        x1l = left_cornerline[0, 0]
+        y1l = left_cornerline[0, 1]
+        x2l = left_cornerline[0, 2]
+        y2l = left_cornerline[0, 3]
 
 
+        # Steigung Punktepaar
+        if (x2l - x1l) == 0:
+            mpl = 1e5
         else:
-            x1l = m[0, 0]
-            x2l = m[0, 1]
-            y1l = m[0, 2]
-            y2l = m[0, 3]
+            mpl = (y2l - y1l) / (x2l - x1l)
 
 
-            # Steigung Punktepaar
-            if (x2l - x1l) == 0:
-                mpl = 0
-            else:
-                mpl = (y2l - y1l) / (x2l - x1l)
+        # y-Achsenabschnitt
+        # y= mx+b
+        bpl = y1l - mpl * x1l
+
+        xpl = (bpl - b1l) / (m1l - mpl)
+        ypl = mpl * xpl + bpl
 
 
-            # y-Achsenabschnitt
-            bpl = y1l - mpl * x1l
+        #print()
+        #print('xpl =', xpl) #, '; ypl =', ypl)
+        #print()
 
-            xpl = (bpl - b1l) / (m1l - mpl)
-            ypl = mpl * xpl + bpl
+        left_intersections.append([xpl, ypl])
 
-
-            #print()
-            print('xpl =', xpl) #, '; ypl =', ypl)
-            #print()
+    #print('left_intersections', left_intersections)
 
 # 3. RECHTE SEITE
-            # Epipolgerade für rechts
-            # Steigung Epipolgerade rechts
-            m2r = (y / 2) / (((2 / 3) * 640) - 640)
-            b2r = -(y - m2r * x)
-            # Epipolgerade rechts
-            yer = m2r * x + b2r
+    # Epipolgerade für rechts
+    # Steigung Epipolgerade rechts
+    m2r = (y_imagesize / 2) / (((2 / 3) * 640) - 640)
+    b2r = -(y_imagesize - m2r * x_imagesize)
+    # Epipolgerade rechts
+    yer = m2r * x_imagesize + b2r
 
 # 4.
             # Punktgerade mit Rückgabe des Schnittpunktes
-            r = len(building_corners_right)
-            # print(r)
 
-            for k in range(0, r):
-                # print(building_corners_right)
-                n = building_corners_right[k]
+    right_intersections = []
+    for right_cornerline in building_corners_right:
 
+        x1r = right_cornerline[0, 0]
+        x2r = right_cornerline[0, 2]
+        y1r = right_cornerline[0, 1]
+        y2r = right_cornerline[0, 3]
 
-                if len(n) == 0:
-                    xpr = -1
-
-
-                else:
-                    x1r = n[0, 0]
-                    x2r = n[0, 2]
-                    y1r = n[0, 1]
-                    y2r = n[0, 3]
-
-                    # Steigung Punktepaar
-                    if (x2r - x1r) == 0:
-                        mpr = 0
-                    else:
-                        mpr = (y2r - y1r) / (x2r - x1r)
+        # Steigung Punktepaar
+        if (x2r - x1r) == 0:
+            mpr = 1e5
+        else:
+            mpr = (y2r - y1r) / (x2r - x1r)
 
 
-                    # y-Achsenabschnitt
-                    bpr = y1r - mpr * x1r
+        # y-Achsenabschnitt
+        bpr = y1r - mpr * x1r
 
-                    xpr = (bpr - b2r) / (m2r - mpr)
-                    ypr = mpr * xpr + bpr
+        xpr = (bpr - b2r) / (m2r - mpr)
+        ypr = mpr * xpr + bpr
 
-                    #print()
-                    print('xpr =', xpr) # , '; ypr =', ypr)
-                    #print()
+        #print()
+        #print('xpr =', xpr) # , '; ypr =', ypr)
+        #print()
+
+        right_intersections.append([xpr, ypr])
+
+    #print('right_intersections', right_intersections)
+
+# 5. Calculation with the correspndance points
+    distances_and_xintersections = []
+    for i, left_intersection in enumerate(left_intersections):
+        right_intersection = right_intersections[map_lines[i]]
+
+        # 5. Calculation of the distance
+        d = ((PM.f * PM.x) / (left_intersection[0] - right_intersection[0]) * PM.p)
+        print(d)
+        distances_and_xintersections.append([round(d, 3), left_intersection[0], right_intersection[0]])
 
 
-
-
-
-# 5. Calculation of the distance
-
-
-                    if (xpl != -1) & (xpr != -1):
-                        d = (PM.f * PM.x) / (abs(xpl- abs(xpr)) * PM.p)
-                        distances = round(d, 3)
-
-
-                    else:
-                        distances = 'no distance'
-
-                    #print('d = ', distances)
+    print('d = ', distances_and_xintersections)
 
 # 6. Relative Distanzen x,y
+    x_array = []
+    y_array = []
 
-                    x_rel = abs(xpl-xpr)
-                    y_rel = np.sqrt(distances**2 - x_rel**2)
+    for distance, xpl, xpr in distances_and_xintersections:
+        x_rel = abs(xpl - xpr)
+        x_array.append(x_rel)
+        y_array.append(np.sqrt(distance ** 2 - x_rel ** 2))
 
-                    print()
-                    print('x_real = ', x_rel)
-                    print('y_rel', y_rel)
-                    print()
+    print()
+    print('x_array = ', x_array)
+    print('y_array', y_array)
+    print()
 
 
-    return xpr, ypr
+    return [], []

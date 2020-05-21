@@ -55,8 +55,8 @@ while(True):
     if not PM.MONO_CAMERA_MODE:
         x_array, y_array = estimate_distances(building_corners_left, building_corners_right)
 
-        x_array = np.random.uniform(0, 100, size=10)
-        y_array = np.random.uniform(0, 100, size=10)
+        #x_array = np.random.uniform(0, 100, size=10)
+        #y_array = np.random.uniform(0, 100, size=10)
 
         birds_eye_map(x_array, y_array)
 
