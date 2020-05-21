@@ -148,4 +148,4 @@ def estimate_distances(building_corners_left, building_corners_right):
                     print()
 
 
-    return distances
+    return xpr, ypr
