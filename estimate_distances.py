@@ -148,7 +148,7 @@ def estimate_distances(building_corners_left, building_corners_right):
         x_rel = abs(xpl - xpr)
         x_array.append(x_rel)
         y_array.append(np.sqrt(distance ** 2 + x_rel ** 2)) #### x_rel ist in pixel angegeben --> umrechnung pixel in meter
-
+        # --> mit winkel rechnen!
     print()
     #print('x_array = ', x_array)
     #print('y_array', y_array)
