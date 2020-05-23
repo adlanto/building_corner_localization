@@ -36,8 +36,8 @@ def estimate_distances(building_corners_left, building_corners_right):
     y_imagesize = PM.RESIZED_FRAME_SIZE[1]
 
 
-    alpha_epipolline = (np.arctan(((y_imagesize / 2)) / ((x_imagesize / 3)))) * (360 / (2 * np.pi))
-    #print(alpha_epipolline)
+    alpha_epipolline = (np.arctan(((y_imagesize / 2)) / ((x_imagesize / 3))))# * (360 / (2 * np.pi))
+    print(alpha_epipolline)
     # y = m * x + b
 
     # Epipolargerade für links
@@ -135,7 +135,7 @@ def estimate_distances(building_corners_left, building_corners_right):
         # 5. Calculation of the distance
         d = (PM.f * PM.x) / (abs(left_intersection[0] - right_intersection[0]) * PM.p)
 
-        distances_and_xintersections.append([round(d, 3), left_intersection[0], right_intersection[0]])
+        distances_and_xintersections.append(round(d, 3))#, left_intersection[0], right_intersection[0]])
 
 
     print('d = ', distances_and_xintersections)
@@ -145,18 +145,18 @@ def estimate_distances(building_corners_left, building_corners_right):
     y_array = []
     x_y_array = []
     for distance in distances_and_xintersections:
-        x_rel = distance[0] * np.sin(alpha_epipolline)
+        x_rel = distance * np.sin(alpha_epipolline)
         x_array.append(x_rel)
-        y_rel = distance[0] * np.cos(alpha_epipolline)
+        y_rel = distance * np.cos(alpha_epipolline)
         y_array.append(y_rel)
 
         x_y_array.append([x_rel, y_rel])
     print('x_array = ', x_array)
-    print('y_array', y_array)
-    print('x_y_array= ', x_y_array)
+    print('y_array = ', y_array)
+    print('x_y_array = ', x_y_array)
     print()
 
 
 
 
-    return x_y_array
+    return x_array, y_array
