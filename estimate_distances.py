@@ -82,7 +82,7 @@ def estimate_distances(building_corners_left, building_corners_right):
         #print()
 
         left_intersections.append([xpl])
-        print('l= ', left_intersections)
+        #print('l= ', left_intersections)
 
     #print('left_intersections', left_intersections)
 
@@ -123,7 +123,7 @@ def estimate_distances(building_corners_left, building_corners_right):
         #print()
 
         right_intersections.append([xpr])
-        print('r= ', right_intersections)
+        #print('r= ', right_intersections)
 
     #print('right_intersections', right_intersections)
 
@@ -143,16 +143,20 @@ def estimate_distances(building_corners_left, building_corners_right):
 # 6. Relative Distanzen x,y
     x_array = []
     y_array = []
-
-    for distance, xpl, xpr in distances_and_xintersections:
-        x_rel = abs(xpl - xpr)
+    x_y_array = []
+    for distance in distances_and_xintersections:
+        x_rel = distance[0] * np.sin(alpha_epipolline)
         x_array.append(x_rel)
-        y_array.append(np.sqrt(distance ** 2 + x_rel ** 2)) #### x_rel ist in pixel angegeben --> umrechnung pixel in meter
-        # --> mit winkel rechnen!
-    print()
-    #print('x_array = ', x_array)
-    #print('y_array', y_array)
+        y_rel = distance[0] * np.cos(alpha_epipolline)
+        y_array.append(y_rel)
+
+        x_y_array.append([x_rel, y_rel])
+    print('x_array = ', x_array)
+    print('y_array', y_array)
+    print('x_y_array= ', x_y_array)
     print()
 
 
-    return x_array, y_array
+
+
+    return x_y_array
