@@ -48,5 +48,5 @@ HOUGH_HARRIS_LINES_DIST_THRESHOLD = 100
 # Parameters for Stereocameras
 f = 5 * 10 ** -3  # Brennweite
 x = 1  # Abstand der beiden Kameras
-p = 3.75 * 10 ** -7  # Pixelgröße
+p = 3.75 * 10 ** -6  # Pixelgröße
 

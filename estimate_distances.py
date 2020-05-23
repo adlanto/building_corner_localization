@@ -34,6 +34,10 @@ def estimate_distances(building_corners_left, building_corners_right):
     # Bildgrößen
     x_imagesize = PM.RESIZED_FRAME_SIZE[0]
     y_imagesize = PM.RESIZED_FRAME_SIZE[1]
+
+
+    alpha_epipolline = (np.arctan(((y_imagesize / 2)) / ((x_imagesize / 3)))) * (360 / (2 * np.pi))
+    #print(alpha_epipolline)
     # y = m * x + b
 
     # Epipolargerade für links
@@ -77,7 +81,8 @@ def estimate_distances(building_corners_left, building_corners_right):
         #print('xpl =', xpl) #, '; ypl =', ypl)
         #print()
 
-        left_intersections.append([xpl, ypl])
+        left_intersections.append([xpl])
+        print('l= ', left_intersections)
 
     #print('left_intersections', left_intersections)
 
@@ -117,7 +122,8 @@ def estimate_distances(building_corners_left, building_corners_right):
         #print('xpr =', xpr) # , '; ypr =', ypr)
         #print()
 
-        right_intersections.append([xpr, ypr])
+        right_intersections.append([xpr])
+        print('r= ', right_intersections)
 
     #print('right_intersections', right_intersections)
 
@@ -127,8 +133,8 @@ def estimate_distances(building_corners_left, building_corners_right):
         right_intersection = right_intersections[map_lines[i]]
 
         # 5. Calculation of the distance
-        d = ((PM.f * PM.x) / (left_intersection[0] - right_intersection[0]) * PM.p)
-        print(d)
+        d = (PM.f * PM.x) / (abs(left_intersection[0] - right_intersection[0]) * PM.p)
+
         distances_and_xintersections.append([round(d, 3), left_intersection[0], right_intersection[0]])
 
 
@@ -141,12 +147,12 @@ def estimate_distances(building_corners_left, building_corners_right):
     for distance, xpl, xpr in distances_and_xintersections:
         x_rel = abs(xpl - xpr)
         x_array.append(x_rel)
-        y_array.append(np.sqrt(distance ** 2 - x_rel ** 2))
+        y_array.append(np.sqrt(distance ** 2 + x_rel ** 2)) #### x_rel ist in pixel angegeben --> umrechnung pixel in meter
 
     print()
-    print('x_array = ', x_array)
-    print('y_array', y_array)
+    #print('x_array = ', x_array)
+    #print('y_array', y_array)
     print()
 
 
-    return [], []
+    return x_array, y_array
