@@ -153,8 +153,8 @@ def birds_eye_map(x_array, y_array):
     for x, y in zip(x_array, y_array):
         x_text = 'x: ' + str(np.round(x, 2))
         y_text = 'y: ' + str(np.round(y, 2))
-        x = x * scale
-        y = y * scale
+        x = (map_size_x / 2 + x) * scale
+        y = map_size_y - y * scale
         # Draw every Point as Circle on the Map
         cv2.circle(map, (int(x), int(y)), radius=int(scale / 2), color=(0, 0, 0), thickness=-1)
         # Write coordinates of the Point next to it on the Map
