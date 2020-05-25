@@ -37,7 +37,7 @@ def estimate_distances(building_corners_left, building_corners_right):
 
 
     alpha_epipolline = (np.arctan(((y_imagesize / 2)) / ((x_imagesize / 3))))# * (360 / (2 * np.pi))
-    print(alpha_epipolline)
+    #print(alpha_epipolline)
     # y = m * x + b
 
     # Epipolargerade für links
