@@ -53,14 +53,15 @@ def estimate_distances(building_corners_left, building_corners_right):
     #print(l)
 
     left_intersections = []
+    x_pixel_offsets = []
     for left_cornerline in building_corners_left:
 
         #
         x1l = left_cornerline[0, 0]
+        x_pixel_offsets.append(x1l - x_imagesize / 2)
         y1l = left_cornerline[0, 1]
         x2l = left_cornerline[0, 2]
         y2l = left_cornerline[0, 3]
-
 
         # Steigung Punktepaar
         if (x2l - x1l) == 0:
@@ -135,8 +136,7 @@ def estimate_distances(building_corners_left, building_corners_right):
         # 5. Calculation of the distance
         d = (PM.f * PM.x) / (abs(left_intersection[0] - right_intersection[0]) * PM.p)
 
-        distances_and_xintersections.append(round(d, 3))#, left_intersection[0], right_intersection[0]])
-
+        distances_and_xintersections.append(round(d, 3))
 
     print('d = ', distances_and_xintersections)
 
@@ -144,10 +144,12 @@ def estimate_distances(building_corners_left, building_corners_right):
     x_array = []
     y_array = []
     x_y_array = []
-    for distance in distances_and_xintersections:
-        x_rel = distance * np.sin(alpha_epipolline)
+    for distance, x_pixel_offset in zip(distances_and_xintersections, x_pixel_offsets):
+        print("X-Pixel-Offset", x_pixel_offset)
+        alpha_point = np.arctan((PM.p * x_pixel_offset) / PM.f)
+        x_rel = distance * np.sin(alpha_point)
         x_array.append(x_rel)
-        y_rel = distance * np.cos(alpha_epipolline)
+        y_rel = distance * np.cos(alpha_point)
         y_array.append(y_rel)
 
         x_y_array.append([x_rel, y_rel])
