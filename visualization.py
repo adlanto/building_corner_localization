@@ -101,7 +101,7 @@ def birds_eye_map(x_array, y_array):
     ego_y = 100
     ego_width = 2
     camera_distance = 1
-    camera_fov = 90
+    camera_fov = 50
     y_camera_range = 100
 
     map = np.ones((map_size_x * scale, map_size_y * scale, 3))
