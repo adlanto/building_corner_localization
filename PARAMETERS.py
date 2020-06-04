@@ -2,7 +2,8 @@
 import numpy as np
 
 # General Parameters
-DURATION_PER_FRAME_MAIN_MS = 500
+USE_CARLA = False
+DURATION_PER_FRAME_MAIN_MS = 50
 MONO_CAMERA_MODE = False
 
 # Parameters for visualization
@@ -17,7 +18,7 @@ None
 
 # Parameters for image preprocessing
 RESIZED_FRAME_SIZE = (640, 480)
-CROP_VALUE_FROM_TOP = 230
+CROP_VALUE_FROM_TOP = 260 # 230 for CM
 BLUR_FILTER_KERNEL_SIZE = 5
 THRESHOLD_FILTER_VALUE = 90
 
