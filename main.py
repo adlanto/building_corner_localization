@@ -5,7 +5,8 @@ import PARAMETERS as PM
 from find_building_contours import detect_keypoints, detect_hough_lines
 from validate_building_contours import get_building_corners, cluster_points_to_buildings, find_external_contours
 from visualization import debug_visualization, building_corner_visualization, birds_eye_map
-from estimate_distances_stereoCam import estimate_distances_stereoCam
+# from estimate_distances_stereoCam import estimate_distances
+import carla_interface
 
 
 def process_frame(frame):
@@ -25,14 +26,25 @@ def process_frame(frame):
     return building_corners
 
 
-cap_left = cv2.VideoCapture('videos/buildings_left.avi')
-if not PM.MONO_CAMERA_MODE:
-    cap_right = cv2.VideoCapture('videos/buildings_right.avi')
+if PM.USE_CARLA:
+    carla = carla_interface.Carla()
+else:
+    cap_left = cv2.VideoCapture('videos/buildings_left.avi')
+    if not PM.MONO_CAMERA_MODE:
+        cap_right = cv2.VideoCapture('videos/buildings_right.avi')
 
 
 while(True):
+
+    frame_left = ()
+    frame_right = ()
+
     # Capture frame-by-frame
-    ret_left, frame_left = cap_left.read()
+    if PM.USE_CARLA:
+        while not isinstance(frame_left, np.ndarray):
+            frame_left = carla.left_image
+    else:
+        ret_left, frame_left = cap_left.read()
 
     if np.shape(frame_left) != ():
         building_corners_left = process_frame(frame_left)
@@ -40,7 +52,11 @@ while(True):
         break
 
     if not PM.MONO_CAMERA_MODE:
-        ret_right, frame_right = cap_right.read()
+        if PM.USE_CARLA:
+            while not isinstance(frame_right, np.ndarray):
+                frame_right = carla.right_image
+        else:
+            ret_right, frame_right = cap_right.read()
 
         if np.shape(frame_right) != ():
             building_corners_right = process_frame(frame_right)
@@ -52,13 +68,13 @@ while(True):
         if not PM.MONO_CAMERA_MODE:
             building_corner_visualization(frame_right.copy(), building_corners_right, 'Right')
 
-    if not PM.MONO_CAMERA_MODE:
-        dis = estimate_distances_stereoCam(building_corners_left, building_corners_right)
+    # if not PM.MONO_CAMERA_MODE:
+        # dis = estimate_distances(building_corners_left, building_corners_right)
 
         #x_array = np.random.uniform(0, 100, size=10)
         #y_array = np.random.uniform(0, 100, size=10)
 
-        birds_eye_map(dis)
+        # birds_eye_map(dis)
 
     cv2.waitKey(PM.DURATION_PER_FRAME_MAIN_MS)
 
@@ -67,7 +83,10 @@ while(True):
 
 
 # When everything done, release the capture
-cap_left.release()
-if not PM.MONO_CAMERA_MODE:
-    cap_right.release()
+if PM.USE_CARLA:
+    carla.destroy()
+else:
+    cap_left.release()
+    if not PM.MONO_CAMERA_MODE:
+        cap_right.release()
 cv2.destroyAllWindows()
