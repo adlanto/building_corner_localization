@@ -5,7 +5,7 @@ import PARAMETERS as PM
 from find_building_contours import detect_keypoints, detect_hough_lines
 from validate_building_contours import get_building_corners, cluster_points_to_buildings, find_external_contours
 from visualization import debug_visualization, building_corner_visualization, birds_eye_map
-from estimate_distances import estimate_distances
+from estimate_distances_stereoCam import estimate_distances_stereoCam
 
 
 def process_frame(frame):
@@ -53,12 +53,12 @@ while(True):
             building_corner_visualization(frame_right.copy(), building_corners_right, 'Right')
 
     if not PM.MONO_CAMERA_MODE:
-        x_array, y_array = estimate_distances(building_corners_left, building_corners_right)
+        dis = estimate_distances_stereoCam(building_corners_left, building_corners_right)
 
         #x_array = np.random.uniform(0, 100, size=10)
         #y_array = np.random.uniform(0, 100, size=10)
 
-        birds_eye_map(x_array, y_array)
+        birds_eye_map(dis)
 
     cv2.waitKey(PM.DURATION_PER_FRAME_MAIN_MS)
 
