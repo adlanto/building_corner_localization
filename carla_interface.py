@@ -4,6 +4,7 @@ import os
 import PARAMETERS as PM
 import numpy as np
 
+
 class Carla:
 
     def __init__(self):
