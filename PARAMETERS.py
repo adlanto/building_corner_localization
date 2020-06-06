@@ -3,7 +3,7 @@ import numpy as np
 
 # General Parameters
 USE_CARLA = False
-DURATION_PER_FRAME_MAIN_MS = 300
+DURATION_PER_FRAME_MAIN_MS = 50
 MONO_CAMERA_MODE = False
 
 # Parameters for visualization

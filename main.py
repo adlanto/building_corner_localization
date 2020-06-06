@@ -5,7 +5,7 @@ import PARAMETERS as PM
 from find_building_contours import detect_keypoints, detect_hough_lines
 from validate_building_contours import get_building_corners, cluster_points_to_buildings, find_external_contours
 from visualization import debug_visualization, building_corner_visualization, birds_eye_map
-from estimate_distances_stereoCam import estimate_distances
+from estimate_distances_stereoCam import estimate_distances, median
 import carla_interface
 
 
@@ -70,7 +70,7 @@ while(True):
 
     if not PM.MONO_CAMERA_MODE:
         x_array, z_array = estimate_distances(frame_left, frame_right, building_corners_left, building_corners_right)
-
+        x_array, z_array = median(x_array, z_array)
         #x_array = np.random.uniform(0, 100, size=10)
         #z_array = np.random.uniform(0, 100, size=10)
 

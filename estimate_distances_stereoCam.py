@@ -3,6 +3,11 @@ import PARAMETERS as PM
 import cv2
 
 
+def median(x_array, z_array):
+
+    return x_array, z_array
+
+
 def estimate_distances(frame_left, frame_right, building_corners_left, building_corners_right):
 
     gray_left_frame = cv2.cvtColor(frame_left, cv2.COLOR_BGR2GRAY)
