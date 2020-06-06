@@ -101,10 +101,21 @@ def birds_eye_map(x_array, y_array):
     ego_y = 100
     ego_width = 2
     camera_distance = 1
-    camera_fov = 50
+    camera_fov = PM.CAMERA_FOV
     y_camera_range = 100
 
     map = np.ones((map_size_x * scale, map_size_y * scale, 3))
+
+    # ** Draw lines **
+    left_line_x = (map_size_x / 2 - 5.25) * scale
+    right_line_x = (map_size_x / 2 + 1.75) * scale
+    middle_line_x = (map_size_x / 2 - 1.75) * scale
+    cv2.line(map, (int(left_line_x), 0), (int(left_line_x), map_size_y * scale), color=(0.3, 0.3, 0.3), thickness=2)
+    cv2.line(map, (int(right_line_x), 0), (int(right_line_x), map_size_y * scale), color=(0.3, 0.3, 0.3), thickness=2)
+    lane = np.array([[(int(left_line_x), 0), (int(left_line_x), map_size_y * scale),
+                      (int(right_line_x), map_size_y * scale), (int(right_line_x), 0)]], dtype=np.int32)
+    cv2.fillPoly(map, lane, color=(0.6, 0.6, 0.6))
+    cv2.line(map, (int(middle_line_x), 0), (int(middle_line_x), map_size_y * scale), color=(1, 1, 1), thickness=1)
 
     # Draw Ego Vehicle
     left_upper_ego_point = (int((ego_x - ego_width / 2) * scale), int((ego_y - 1) * scale))
