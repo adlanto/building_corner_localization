@@ -4,22 +4,21 @@ import os
 import PARAMETERS as PM
 import numpy as np
 
-sys.path.insert(1, 'D:/Data/GitHub_Repos/carla_dist/WindowsNoEditor/PythonAPI/examples')
-try:
-    sys.path.append(glob.glob
-                        (
-                        'D:/Data/GitHub_Repos/carla_dist/WindowsNoEditor/PythonAPI/carla/dist/carla-*%d.%d-%s.egg' % (
-                            sys.version_info.major,
-                            sys.version_info.minor, 'win-amd64' if os.name == 'nt' else 'linux-x86_64'))[0])
-except IndexError:
-    pass
-
-import carla
-
-
 class Carla:
 
     def __init__(self):
+
+        sys.path.insert(1, 'D:/Data/GitHub_Repos/carla_dist/WindowsNoEditor/PythonAPI/examples')
+        try:
+            sys.path.append(glob.glob
+                                (
+                                'D:/Data/GitHub_Repos/carla_dist/WindowsNoEditor/PythonAPI/carla/dist/carla-*%d.%d-%s.egg' % (
+                                    sys.version_info.major,
+                                    sys.version_info.minor, 'win-amd64' if os.name == 'nt' else 'linux-x86_64'))[0])
+        except IndexError:
+            pass
+
+        import carla
 
         self.actor_list = []
 
