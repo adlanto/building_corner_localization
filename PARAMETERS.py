@@ -3,7 +3,7 @@ import numpy as np
 
 # General Parameters
 USE_CARLA = False
-DURATION_PER_FRAME_MAIN_MS = 50
+DURATION_PER_FRAME_MAIN_MS = 300
 MONO_CAMERA_MODE = False
 
 # Parameters for visualization
@@ -46,8 +46,10 @@ MIN_POINTS_PER_CLUSTER = 3
 BUILDING_CORNERS_HARRIS_THRESHOLD = 10
 HOUGH_HARRIS_LINES_DIST_THRESHOLD = 100
 
-# Parameters for Stereocameras
-f = 5 * 10 ** -3  # Brennweite
-x = 1  # Abstand der beiden Kameras
-p = 3.75 * 10 ** -5  # Pixelgröße
+# Parameters for Stereo Cameras
+MAXIMAL_DISTANCE_CORRESPONDING_LINES = 50
+CAMERA_FOCAL = 0.8 * RESIZED_FRAME_SIZE[0]
+DISTANCE_BETWEEN_STEREO_CAMERAS = 1
+CAMERA_FOV = 110
+# CAMERA_PIXEL_SIZE = 3.75 * 10 ** -5  # Pixelgröße
 
