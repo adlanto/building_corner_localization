@@ -2,7 +2,7 @@ import numpy as np
 import PARAMETERS as PM
 import cv2
 
-
+matched_arrays_x_z = []
 
 
 def median(x_array, z_array):
@@ -25,7 +25,7 @@ def median(x_array, z_array):
     #     print('x_array_median', x_array)
     # Check if x_array is not empty
 
-    matched_arrays_x_z = []
+    matched_arrays_x_z.append(x_array, z_array)
 
     if x_array is not []:
         # print('x_array= ', x_array)
