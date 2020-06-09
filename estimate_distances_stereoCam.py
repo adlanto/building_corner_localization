@@ -7,26 +7,24 @@ Z_ARRAYS = []
 
 
 def median(x_array, z_array):
-    print('x_array= ', x_array)
-    print('z_array=', z_array)
-    X_ARRAYS.append(x_array)
-    print(X_ARRAYS)
-    if len(X_ARRAYS) >= 5:
-        # Punktevergleich for-Schleifen
-        for i, xa1 in enumerate(X_ARRAYS):
-            for j, xa2 in enumerate(X_ARRAYS):
-                for x in xa2:
-                    if
-        #median
-        X_ARRAYS.pop(0)
+    x_matched = []
+    # print('x_array= ', x_array)
+    # print('z_array=', z_array)
+    if x_array is not []:
+        X_ARRAYS.append(x_array)
+        print(X_ARRAYS)
+        if len(X_ARRAYS) >= 5:
+            # Punktevergleich for-Schleifen
+            for i, xa1 in enumerate(X_ARRAYS):
+                for j, xa2 in enumerate(X_ARRAYS):
+                    x1 = xa1[j]
+                    for x2 in xa2:
+                        if x1-1 <= x2 >= x1+1:
+                            x_matched.append(x2)
 
-    # x_array = cv2.medianBlur(x_array,  3)
-    #
-    #
-    # z_array = cv2.medianBlur(z_array, 3)
-    # print('median x= ', x_array)
-    # print('median z= ', z_array)
+            X_ARRAYS.pop(0) # array mit 5 punkten wird gelöscht und mit neuen gefüllt
 
+        print('x_array_median', x_array)
     return x_array, z_array
 
 
