@@ -2,13 +2,13 @@ import numpy as np
 import PARAMETERS as PM
 import cv2
 
-matched_arrays_x_z = []
+
 
 
 def median(x_array, z_array):
-    x_matched = []
-    print('x_array= ', x_array)
-    print('z_array=', z_array)
+    #x_matched = []
+    # print('x_array= ', x_array)
+    # print('z_array=', z_array)
     # if x_array is not []:
     #     X_ARRAYS.append(x_array)
     #     print(X_ARRAYS)
@@ -25,19 +25,25 @@ def median(x_array, z_array):
     #     print('x_array_median', x_array)
     # Check if x_array is not empty
 
-    print(matched_arrays_x_z)
+    matched_arrays_x_z = []
 
     if x_array is not []:
+        # print('x_array= ', x_array)
         # Match x values from current array to points of arrays before
         # Iterate over all array x values
         for i, x_new in enumerate(x_array):
             # [[p1[x:z][x:z][p2]]
-            for matched_points_array in matched_arrays_x_z:
+            print('x_new= ', x_new)
+            for matched_points_array in matched_arrays_x_z: # kommt nix an !!!
+                print('matched_points_array= ', matched_points_array)
                 x_old = matched_points_array[0][0]
+                #print('x_old= ', x_old)
                 if x_old - 1 <= x_new <= x_old + 1:
                     point = [x_new, z_array[i]]
                     matched_points_array.append(point)
                 matched_arrays_x_z.append(matched_points_array)
+
+    #print(matched_arrays_x_z)
 
     median_z_array = []
     median_x_array = []
