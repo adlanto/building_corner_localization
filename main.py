@@ -68,7 +68,7 @@ while(True):
         if not PM.MONO_CAMERA_MODE:
             building_corner_visualization(frame_right.copy(), building_corners_right, 'Right')
 
-    if not PM.MONO_CAMERA_MODE:
+    if not PM.MONO_CAMERA_MODE and not (building_corners_left == [] or building_corners_right == []):
         x_array, z_array = estimate_distances(frame_left, frame_right, building_corners_left, building_corners_right)
         x_array, z_array = median(x_array, z_array)
         #x_array = np.random.uniform(0, 100, size=10)

@@ -2,30 +2,55 @@ import numpy as np
 import PARAMETERS as PM
 import cv2
 
-X_ARRAYS = []
-Z_ARRAYS = []
+matched_arrays_x_z = []
 
 
 def median(x_array, z_array):
     x_matched = []
-    # print('x_array= ', x_array)
-    # print('z_array=', z_array)
+    print('x_array= ', x_array)
+    print('z_array=', z_array)
+    # if x_array is not []:
+    #     X_ARRAYS.append(x_array)
+    #     print(X_ARRAYS)
+    #     if len(X_ARRAYS) >= 5:
+    #         # Punktevergleich for-Schleifen
+    #         for i, xa1 in enumerate(X_ARRAYS):
+    #             for j, xa2 in enumerate(X_ARRAYS):
+    #                 x1 = xa1[j]
+    #                 for x2 in xa2:
+    #                     if x1-1 <= x2 >= x1+1:
+    #                         x_matched.append(x2)
+    #
+    #         X_ARRAYS.pop(0) # array mit 5 punkten wird gelöscht und mit neuen gefüllt
+    #     print('x_array_median', x_array)
+    # Check if x_array is not empty
+
+    print(matched_arrays_x_z)
+
     if x_array is not []:
-        X_ARRAYS.append(x_array)
-        print(X_ARRAYS)
-        if len(X_ARRAYS) >= 5:
-            # Punktevergleich for-Schleifen
-            for i, xa1 in enumerate(X_ARRAYS):
-                for j, xa2 in enumerate(X_ARRAYS):
-                    x1 = xa1[j]
-                    for x2 in xa2:
-                        if x1-1 <= x2 >= x1+1:
-                            x_matched.append(x2)
+        # Match x values from current array to points of arrays before
+        # Iterate over all array x values
+        for i, x_new in enumerate(x_array):
+            # [[p1[x:z][x:z][p2]]
+            for matched_points_array in matched_arrays_x_z:
+                x_old = matched_points_array[0][0]
+                if x_old - 1 <= x_new <= x_old + 1:
+                    point = [x_new, z_array[i]]
+                    matched_points_array.append(point)
+                matched_arrays_x_z.append(matched_points_array)
 
-            X_ARRAYS.pop(0) # array mit 5 punkten wird gelöscht und mit neuen gefüllt
+    median_z_array = []
+    median_x_array = []
+    for matched_points_array in matched_arrays_x_z:
+        if len(matched_points_array) >= 5:
+            x_values = matched_points_array[:, 0]
+            x_median = cv2.medianBlur(x_values, 3)
+            median_x_array.append(x_median)
+            z_values = matched_points_array[:, 1]
+            z_median = cv2.medianBlur(z_values, 3)
+            median_z_array.append(z_median)
 
-        print('x_array_median', x_array)
-    return x_array, z_array
+    return median_x_array, median_z_array
 
 
 def estimate_distances(frame_left, frame_right, building_corners_left, building_corners_right):
