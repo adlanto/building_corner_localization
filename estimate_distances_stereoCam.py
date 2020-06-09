@@ -2,8 +2,30 @@ import numpy as np
 import PARAMETERS as PM
 import cv2
 
+X_ARRAYS = []
+Z_ARRAYS = []
+
 
 def median(x_array, z_array):
+    print('x_array= ', x_array)
+    print('z_array=', z_array)
+    X_ARRAYS.append(x_array)
+    print(X_ARRAYS)
+    if len(X_ARRAYS) >= 5:
+        # Punktevergleich for-Schleifen
+        for i, xa1 in enumerate(X_ARRAYS):
+            for j, xa2 in enumerate(X_ARRAYS):
+                for x in xa2:
+                    if
+        #median
+        X_ARRAYS.pop(0)
+
+    # x_array = cv2.medianBlur(x_array,  3)
+    #
+    #
+    # z_array = cv2.medianBlur(z_array, 3)
+    # print('median x= ', x_array)
+    # print('median z= ', z_array)
 
     return x_array, z_array
 
@@ -60,14 +82,14 @@ def estimate_distances(frame_left, frame_right, building_corners_left, building_
         right_line_x = (right_line[0] + right_line[2]) / 2
         if left_line_x - right_line_x != 0:
             # Calculate the depth at the specific position
-            print("B:", PM.DISTANCE_BETWEEN_STEREO_CAMERAS, 'f:', PM.CAMERA_FOCAL)
+            #print("B:", PM.DISTANCE_BETWEEN_STEREO_CAMERAS, 'f:', PM.CAMERA_FOCAL)
             z = (PM.DISTANCE_BETWEEN_STEREO_CAMERAS * PM.CAMERA_FOCAL) / (left_line_x - right_line_x)
             z_array.append(z)
             # Calculate the corresponding x values
             x_mean = (left_line_x + right_line_x) / 2
-            print('left_line_x:', left_line_x, 'right_line_x:', right_line_x, 'f:', PM.CAMERA_FOCAL, 'z:', z, 'x_mean', x_mean)
+            #print('left_line_x:', left_line_x, 'right_line_x:', right_line_x, 'f:', PM.CAMERA_FOCAL, 'z:', z, 'x_mean', x_mean)
             x = ((x_mean - PM.RESIZED_FRAME_SIZE[0] / 2) / PM.CAMERA_FOCAL) * z
-            print('x', x)
+            #print('x', x)
             x_array.append(x)
 
     return x_array, z_array
