@@ -1,60 +1,68 @@
 import numpy as np
 import PARAMETERS as PM
 import cv2
+import statistics
 
 matched_arrays_x_z = []
+matched_array = []
+matched_array_x_z = []
 
 
 def median(x_array, z_array):
-    #x_matched = []
-    # print('x_array= ', x_array)
-    # print('z_array=', z_array)
-    # if x_array is not []:
-    #     X_ARRAYS.append(x_array)
-    #     print(X_ARRAYS)
-    #     if len(X_ARRAYS) >= 5:
-    #         # Punktevergleich for-Schleifen
-    #         for i, xa1 in enumerate(X_ARRAYS):
-    #             for j, xa2 in enumerate(X_ARRAYS):
-    #                 x1 = xa1[j]
-    #                 for x2 in xa2:
-    #                     if x1-1 <= x2 >= x1+1:
-    #                         x_matched.append(x2)
-    #
-    #         X_ARRAYS.pop(0) # array mit 5 punkten wird gelöscht und mit neuen gefüllt
-    #     print('x_array_median', x_array)
-    # Check if x_array is not empty
 
-    matched_arrays_x_z.append(x_array, z_array)
+    matched_arrays_x_z.append([x_array, z_array])
+    print('matched', matched_arrays_x_z)
 
     if x_array is not []:
-        # print('x_array= ', x_array)
-        # Match x values from current array to points of arrays before
-        # Iterate over all array x values
+        print('x_array= ', x_array)
+        print('z_array', z_array)
+    #     # Match x values from current array to points of arrays before
+    #     # Iterate over all array x values
+
+
         for i, x_new in enumerate(x_array):
-            # [[p1[x:z][x:z][p2]]
+    #         #print('x_array', x_array)
+    #         # [[p1[x:z][x:z][p2]]
             print('x_new= ', x_new)
-            for matched_points_array in matched_arrays_x_z: # kommt nix an !!!
-                print('matched_points_array= ', matched_points_array)
+
+            for matched_points_array in matched_arrays_x_z:
                 x_old = matched_points_array[0][0]
-                #print('x_old= ', x_old)
+                print('x_old= ', x_old)
                 if x_old - 1 <= x_new <= x_old + 1:
                     point = [x_new, z_array[i]]
-                    matched_points_array.append(point)
-                matched_arrays_x_z.append(matched_points_array)
+                    print('1 point', point)
+        matched_array.append(point)
+        print('1 matched_points_array', matched_array)
+        matched_array_x_z.append(matched_array)
+        print('2 matched_array_x_z', matched_array_x_z)
 
-    #print(matched_arrays_x_z)
 
     median_z_array = []
     median_x_array = []
-    for matched_points_array in matched_arrays_x_z:
-        if len(matched_points_array) >= 5:
-            x_values = matched_points_array[:, 0]
-            x_median = cv2.medianBlur(x_values, 3)
-            median_x_array.append(x_median)
-            z_values = matched_points_array[:, 1]
-            z_median = cv2.medianBlur(z_values, 3)
-            median_z_array.append(z_median)
+    x_value = []
+    z_value = []
+    for points_matched_array in matched_array_x_z:
+        #print('points_matched_array', points_matched_array)
+        if len(points_matched_array) >= 5:
+            for j, x_values in enumerate(points_matched_array):
+                x_value.append(x_values[0])
+                #print('x_value', x_value)
+                median_x = statistics.median_grouped(x_value)
+                #print('median_x', median_x)
+            median_x_array.append(median_x)
+
+            # x_values = points_matched_array[0][:]
+            # print('x_values', x_values)
+            # x_median = cv2.medianBlur(x_values, 3)
+
+            for k, z_values in enumerate(points_matched_array[1]):
+                z_value.append(z_values)
+                median_z = statistics.median_grouped(z_value)
+            median_z_array.append(median_z)
+
+            # z_values = points_matched_array[:, 1]
+            # z_median = cv2.medianBlur(z_values, 3)
+            # median_z_array.append(z_median)
 
     return median_x_array, median_z_array
 
