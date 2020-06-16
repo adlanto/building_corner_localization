@@ -3,69 +3,150 @@ import PARAMETERS as PM
 import cv2
 import statistics
 
-matched_arrays_x_z = []
-matched_array = []
-matched_array_x_z = []
 
+class Median:
 
-def median(x_array, z_array):
+    def __init__(self):
 
-    matched_arrays_x_z.append([x_array, z_array])
-    print('matched', matched_arrays_x_z)
+        # self.matched_arrays_x_z = []
+        # self.matched_array = []
+        # self.matched_array_x_z = []
 
-    if x_array is not []:
-        print('x_array= ', x_array)
-        #print('z_array', z_array)
-    #     # Match x values from current array to points of arrays before
-    #     # Iterate over all array x values
+        self.tracked_points = []
+        self.timestamp = 0
+        self.frame_counter_for_deletion = {}
+        self.previous_point_length = {}
 
+    def update(self, x_array, z_array):
 
-        for i, x_new in enumerate(x_array):
-            #print('x_new= ', x_new)
-
-            for matched_points_array in matched_arrays_x_z:
-                if matched_points_array is not []:
-                    x_old = matched_points_array[0][0]
-                    # print('x_old= ', x_old)
-                    if x_old - 1 <= x_new <= x_old + 1:
-                        point = [x_new, z_array[i]]
-                        #print('1 point', point)
-                        matched_array.append(point)
-                        #print('1 matched_points_array', matched_array)
-        # matched_array_x_z.append(matched_array)
-        #print('2 matched_array_x_z', matched_array_x_z)
-
-
-        median_z_array = []
         median_x_array = []
-        x_value = []
-        z_value = []
-        for points_matched_array in matched_array_x_z:
-            #print('points_matched_array', points_matched_array)
-            if len(points_matched_array) >= 5:
-                for j, x_values in enumerate(points_matched_array):
-                    x_value.append(x_values[0])
-                    #print('x_value', x_value)
-                    median_x = statistics.median_grouped(x_value)
-                #print('median_x', median_x)
-                median_x_array.append(median_x)
-                #print('median_x_array', median_x_array)
+        median_z_array = []
 
-                # x_values = points_matched_array[0][:]
-                # print('x_values', x_values)
-                # x_median = cv2.medianBlur(x_values, 3)
+        # matched_arrays_x_z.append([x_array, z_array])
+        # print('matched', matched_arrays_x_z)
 
-                for k, z_values in enumerate(points_matched_array[1]):
-                    z_value.append(z_values)
-                    median_z = statistics.median_grouped(z_value)
-                median_z_array.append(median_z)
-                #print('median_z_array', median_z_array)
+        # If no points are tracked yet - add all points detected in current frame to be tracked
+        if len(self.tracked_points) == 0:
+            for x, z in zip(x_array, z_array):
+                tracked_point = [[x, z], ]
+                self.tracked_points.append(tracked_point)
+        # Else: Points were detected in a previous frame
+        else:
+            # Iterate over new points
+            for x_new, z_new in zip(x_array, z_array):
+                for i, tracked_point in enumerate(self.tracked_points):
+                    # print("i", i, "len", len(self.tracked_points))
+                    x_old = tracked_point[0][0]
+                    # Try to find corresponding points
+                    if x_old - 1 <= x_new <= x_old + 1:
+                        # If found add to tracked_point and continue with next new point
+                        tracked_point.append([x_new, z_new])
+                        break
+                    if i == len(self.tracked_points) - 1:
+                        # If point was not found before loop completed, add new tracked point
+                        tracked_point = [[x_new, z_new], ]
+                        self.tracked_points.append(tracked_point)
+                        break
 
-                # z_values = points_matched_array[:, 1]
-                # z_median = cv2.medianBlur(z_values, 3)
-                # median_z_array.append(z_median)
+        # print(self.tracked_points)
+        # Create median of all points that were tracked more than FRAMES_FOR_MEDIAN times
+        for tracked_point in self.tracked_points:
+            if len(tracked_point) >= PM.FRAMES_FOR_MEDIAN:
+                # print(tracked_point)
+                # print(list(zip(*tracked_point))[0])
+                # print(list(zip(*tracked_point))[1])
+                median_x_array.append(statistics.median_grouped(list(zip(*tracked_point))[0]))
+                median_z_array.append(statistics.median_grouped(list(zip(*tracked_point))[1]))
+                # Remove first point from the tracked point list
+                tracked_point.pop(0)
 
-    return median_x_array, median_z_array
+        self.timestamp = self.timestamp + 1
+        deletion_marker = []
+        for i, tracked_point in enumerate(self.tracked_points):
+            self.previous_point_length[i] = len(tracked_point)
+            if len(tracked_point) == self.previous_point_length[i]:
+                if i in self.frame_counter_for_deletion.keys():
+                    self.frame_counter_for_deletion[i] = self.frame_counter_for_deletion[i] + 1
+                else:
+                    self.frame_counter_for_deletion[i] = 1
+                if self.frame_counter_for_deletion[i] >= PM.NUMBER_FRAMES_AFTER_WHICH_DELETE_MEDIAN_POINT:
+                    deletion_marker.append(i)
+            else:
+                self.frame_counter_for_deletion[i] = 0
+
+        # print("deletion_marker", deletion_marker)
+        # print("tracked_points", len(self.tracked_points))
+
+        for delete_index in deletion_marker[::-1]:
+            # print(delete_index)
+            self.previous_point_length.pop(delete_index)
+            self.frame_counter_for_deletion.pop(delete_index)
+            self.tracked_points.pop(delete_index)
+
+        # if x_array is not []:
+        #     # print('x_array= ', x_array)
+        #     # print('z_array', z_array
+        #     if len(self.matched_arrays_x_z) == 0:
+        #         self.matched_arrays_x_z[0] = []
+        #         for i, x_new in enumerate(x_array):
+        #             point = [x_new, z_array[i]]
+        #             self.matched_arrays_x_z[0].append(point)
+        #     # Match x values from current array to points of arrays before
+        #     for i, x_new in enumerate(x_array):
+        #         # print('x_new= ', x_new)
+        #         for matched_points_array in self.matched_arrays_x_z:
+        #             if matched_points_array is not []:
+        #                 x_old = matched_points_array[0][0]
+        #                 # print('x_old= ', x_old)
+        #                 if x_old - 1 <= x_new <= x_old + 1:
+        #                     point = [x_new, z_array[i]]
+        #                     #print('1 point', point)
+        #                     # Add x-values to array that are not in array yet
+        #                     self.matched_array.append(point)
+        #                     #print('1 matched_points_array', matched_array)
+        #                     continue
+        #                 else:
+        #                     point = [x_new, z_array[i]]
+        #                     self.matched_arrays_x_z.append(point)
+        #     # matched_array_x_z.append(matched_array)
+        #     print('2 matched_array_x_z', self.matched_arrays_x_z)
+        #
+        #
+        #     median_z_array = []
+        #     median_x_array = []
+        #     x_value = []
+        #     z_value = []
+        #     for points_matched_array in self.matched_array_x_z:
+        #         #print('points_matched_array', points_matched_array)
+        #         if len(points_matched_array) >= 5:
+        #             for j, x_values in enumerate(points_matched_array):
+        #                 x_value.append(x_values[0])
+        #                 #print('x_value', x_value)
+        #                 median_x = statistics.median_grouped(x_value)
+        #             #print('median_x', median_x)
+        #             median_x_array.append(median_x)
+        #             #print('median_x_array', median_x_array)
+        #
+        #             # x_values = points_matched_array[0][:]
+        #             # print('x_values', x_values)
+        #             # x_median = cv2.medianBlur(x_values, 3)
+        #
+        #             for k, z_values in enumerate(points_matched_array[1]):
+        #                 z_value.append(z_values)
+        #                 median_z = statistics.median_grouped(z_value)
+        #             median_z_array.append(median_z)
+        #             #print('median_z_array', median_z_array)
+        #
+        #             # z_values = points_matched_array[:, 1]
+        #             # z_median = cv2.medianBlur(z_values, 3)
+        #             # median_z_array.append(z_median)
+
+        return median_x_array, median_z_array
+
+
+def kalman(x_array, z_array):
+
+    pass
 
 
 def estimate_distances(frame_left, frame_right, building_corners_left, building_corners_right):
