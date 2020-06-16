@@ -15,54 +15,55 @@ def median(x_array, z_array):
 
     if x_array is not []:
         print('x_array= ', x_array)
-        print('z_array', z_array)
+        #print('z_array', z_array)
     #     # Match x values from current array to points of arrays before
     #     # Iterate over all array x values
 
 
         for i, x_new in enumerate(x_array):
-    #         #print('x_array', x_array)
-    #         # [[p1[x:z][x:z][p2]]
-            print('x_new= ', x_new)
+            #print('x_new= ', x_new)
 
             for matched_points_array in matched_arrays_x_z:
-                x_old = matched_points_array[0][0]
-                print('x_old= ', x_old)
-                if x_old - 1 <= x_new <= x_old + 1:
-                    point = [x_new, z_array[i]]
-                    print('1 point', point)
-        matched_array.append(point)
-        print('1 matched_points_array', matched_array)
-        matched_array_x_z.append(matched_array)
-        print('2 matched_array_x_z', matched_array_x_z)
+                if matched_points_array is not []:
+                    x_old = matched_points_array[0][0]
+                    # print('x_old= ', x_old)
+                    if x_old - 1 <= x_new <= x_old + 1:
+                        point = [x_new, z_array[i]]
+                        #print('1 point', point)
+                        matched_array.append(point)
+                        #print('1 matched_points_array', matched_array)
+        # matched_array_x_z.append(matched_array)
+        #print('2 matched_array_x_z', matched_array_x_z)
 
 
-    median_z_array = []
-    median_x_array = []
-    x_value = []
-    z_value = []
-    for points_matched_array in matched_array_x_z:
-        #print('points_matched_array', points_matched_array)
-        if len(points_matched_array) >= 5:
-            for j, x_values in enumerate(points_matched_array):
-                x_value.append(x_values[0])
-                #print('x_value', x_value)
-                median_x = statistics.median_grouped(x_value)
+        median_z_array = []
+        median_x_array = []
+        x_value = []
+        z_value = []
+        for points_matched_array in matched_array_x_z:
+            #print('points_matched_array', points_matched_array)
+            if len(points_matched_array) >= 5:
+                for j, x_values in enumerate(points_matched_array):
+                    x_value.append(x_values[0])
+                    #print('x_value', x_value)
+                    median_x = statistics.median_grouped(x_value)
                 #print('median_x', median_x)
-            median_x_array.append(median_x)
+                median_x_array.append(median_x)
+                #print('median_x_array', median_x_array)
 
-            # x_values = points_matched_array[0][:]
-            # print('x_values', x_values)
-            # x_median = cv2.medianBlur(x_values, 3)
+                # x_values = points_matched_array[0][:]
+                # print('x_values', x_values)
+                # x_median = cv2.medianBlur(x_values, 3)
 
-            for k, z_values in enumerate(points_matched_array[1]):
-                z_value.append(z_values)
-                median_z = statistics.median_grouped(z_value)
-            median_z_array.append(median_z)
+                for k, z_values in enumerate(points_matched_array[1]):
+                    z_value.append(z_values)
+                    median_z = statistics.median_grouped(z_value)
+                median_z_array.append(median_z)
+                #print('median_z_array', median_z_array)
 
-            # z_values = points_matched_array[:, 1]
-            # z_median = cv2.medianBlur(z_values, 3)
-            # median_z_array.append(z_median)
+                # z_values = points_matched_array[:, 1]
+                # z_median = cv2.medianBlur(z_values, 3)
+                # median_z_array.append(z_median)
 
     return median_x_array, median_z_array
 
@@ -128,6 +129,7 @@ def estimate_distances(frame_left, frame_right, building_corners_left, building_
             x = ((x_mean - PM.RESIZED_FRAME_SIZE[0] / 2) / PM.CAMERA_FOCAL) * z
             #print('x', x)
             x_array.append(x)
+
 
     return x_array, z_array
 
