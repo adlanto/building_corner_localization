@@ -1,4 +1,4 @@
 .idea/
 __pycache__/
-./videos/kempten_left_camera.avi
-./videos/kempten_right_camera.avi
+videos/kempten_left_camera.avi
+videos/kempten_right_camera.avi
