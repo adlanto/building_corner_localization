@@ -29,9 +29,9 @@ def process_frame(frame):
 if PM.USE_CARLA:
     carla = carla_interface.Carla()
 else:
-    cap_left = cv2.VideoCapture('videos/buildings_left.avi')
+    cap_left = cv2.VideoCapture('videos/kempten_left_camera.avi')
     if not PM.MONO_CAMERA_MODE:
-        cap_right = cv2.VideoCapture('videos/buildings_right.avi')
+        cap_right = cv2.VideoCapture('videos/kempten_right_camera.avi')
 
 median = Median()
 
