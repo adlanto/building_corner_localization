@@ -35,6 +35,10 @@ else:
 
 median = Median()
 
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+output_size = (1820, 1000)
+out = cv2.VideoWriter('output.avi', fourcc, 20.0, output_size)
+
 while(True):
 
     frame_left = ()
@@ -64,10 +68,9 @@ while(True):
         else:
             break
 
-    if (PM.VISUALIZE_BUILDING_CORNERS):
-        building_corner_visualization(frame_left.copy(), building_corners_left, 'Left')
-        if not PM.MONO_CAMERA_MODE:
-            building_corner_visualization(frame_right.copy(), building_corners_right, 'Right')
+    left_frame_corners = building_corner_visualization(frame_left.copy(), building_corners_left, 'Left')
+    if not PM.MONO_CAMERA_MODE:
+        right_frame_corners = building_corner_visualization(frame_right.copy(), building_corners_right, 'Right')
 
     if not PM.MONO_CAMERA_MODE and not (building_corners_left == [] or building_corners_right == []):
         x_array, z_array = estimate_distances(frame_left, frame_right, building_corners_left, building_corners_right)
@@ -75,7 +78,10 @@ while(True):
         #x_array = np.random.uniform(0, 100, size=10)
         #z_array = np.random.uniform(0, 100, size=10)
 
-        birds_eye_map(x_array, z_array)
+        output_frame = birds_eye_map(x_array, z_array, left_frame_corners, right_frame_corners)
+
+        output_frame = cv2.resize(output_frame, output_size)
+        out.write(output_frame)
 
     cv2.waitKey(PM.DURATION_PER_FRAME_MAIN_MS)
 
@@ -90,4 +96,5 @@ else:
     cap_left.release()
     if not PM.MONO_CAMERA_MODE:
         cap_right.release()
+        out.release()
 cv2.destroyAllWindows()
