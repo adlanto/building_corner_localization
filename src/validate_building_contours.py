@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.cluster import AgglomerativeClustering
-import PARAMETERS as PM
+from src import PARAMETERS as PM
 
 
 def lines_to_points(lines):

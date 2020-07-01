@@ -1,7 +1,7 @@
 import sys
 import glob
 import os
-import PARAMETERS as PM
+from src import PARAMETERS as PM
 import numpy as np
 
 

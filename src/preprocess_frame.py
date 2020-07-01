@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import PARAMETERS as PM
+from src import PARAMETERS as PM
 
 
 def preprocess_frame(frame: np.ndarray) -> np.ndarray:
