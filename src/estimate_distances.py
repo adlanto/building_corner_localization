@@ -83,64 +83,6 @@ class Median:
             self.frame_counter_for_deletion.pop(delete_index)
             self.tracked_points.pop(delete_index)
 
-        # if x_array is not []:
-        #     # print('x_array= ', x_array)
-        #     # print('z_array', z_array
-        #     if len(self.matched_arrays_x_z) == 0:
-        #         self.matched_arrays_x_z[0] = []
-        #         for i, x_new in enumerate(x_array):
-        #             point = [x_new, z_array[i]]
-        #             self.matched_arrays_x_z[0].append(point)
-        #     # Match x values from current array to points of arrays before
-        #     for i, x_new in enumerate(x_array):
-        #         # print('x_new= ', x_new)
-        #         for matched_points_array in self.matched_arrays_x_z:
-        #             if matched_points_array is not []:
-        #                 x_old = matched_points_array[0][0]
-        #                 # print('x_old= ', x_old)
-        #                 if x_old - 1 <= x_new <= x_old + 1:
-        #                     point = [x_new, z_array[i]]
-        #                     #print('1 point', point)
-        #                     # Add x-values to array that are not in array yet
-        #                     self.matched_array.append(point)
-        #                     #print('1 matched_points_array', matched_array)
-        #                     continue
-        #                 else:
-        #                     point = [x_new, z_array[i]]
-        #                     self.matched_arrays_x_z.append(point)
-        #     # matched_array_x_z.append(matched_array)
-        #     print('2 matched_array_x_z', self.matched_arrays_x_z)
-        #
-        #
-        #     median_z_array = []
-        #     median_x_array = []
-        #     x_value = []
-        #     z_value = []
-        #     for points_matched_array in self.matched_array_x_z:
-        #         #print('points_matched_array', points_matched_array)
-        #         if len(points_matched_array) >= 5:
-        #             for j, x_values in enumerate(points_matched_array):
-        #                 x_value.append(x_values[0])
-        #                 #print('x_value', x_value)
-        #                 median_x = statistics.median_grouped(x_value)
-        #             #print('median_x', median_x)
-        #             median_x_array.append(median_x)
-        #             #print('median_x_array', median_x_array)
-        #
-        #             # x_values = points_matched_array[0][:]
-        #             # print('x_values', x_values)
-        #             # x_median = cv2.medianBlur(x_values, 3)
-        #
-        #             for k, z_values in enumerate(points_matched_array[1]):
-        #                 z_value.append(z_values)
-        #                 median_z = statistics.median_grouped(z_value)
-        #             median_z_array.append(median_z)
-        #             #print('median_z_array', median_z_array)
-        #
-        #             # z_values = points_matched_array[:, 1]
-        #             # z_median = cv2.medianBlur(z_values, 3)
-        #             # median_z_array.append(z_median)
-
         return median_x_array, median_z_array
 
 
