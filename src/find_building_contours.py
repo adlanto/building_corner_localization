@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import PARAMETERS as PM
+from src import PARAMETERS as PM
 
 
 def detect_keypoints(preprocessed_image: np.ndarray) -> np.ndarray:

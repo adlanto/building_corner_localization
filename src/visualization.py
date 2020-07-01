@@ -1,62 +1,61 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-import PARAMETERS as PM
+from src import PARAMETERS as PM
 
 
 def building_corner_visualization(frame, building_corners, name):
+    frame = cv2.resize(frame, PM.RESIZED_FRAME_SIZE)
 
     for building_corner in building_corners:
         for x1, y1, x2, y2 in building_corner:
             cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
     if PM.DEBUG_VISUALIZATION:
-        cv2.imshow('Building Corners '+name, frame)
+        cv2.imshow('Building Corners ' + name, frame)
 
     return frame
 
 
 def debug_visualization(frame, preprocessed_frame, keypoints, hough_lines,
-                                         hough_contours, hough_contours_poly, vertical_lines, keypoint_clusters) -> int:
-
+                        hough_contours, hough_contours_poly, vertical_lines, keypoint_clusters) -> int:
     errors = 0
     # Show the image after the preprocess step
     cv2.imshow('Preprocessed Image', np.int8(preprocessed_frame))
 
     # Hough visualization
-    if (PM.VISUALIZE_HOUGH):
-        errors = errors + hough_lines_visualization(frame.copy(), hough_contours, hough_contours_poly, hough_lines, vertical_lines)
+    if PM.VISUALIZE_HOUGH:
+        errors = errors + hough_lines_visualization(frame.copy(), hough_contours, hough_contours_poly, hough_lines,
+                                                    vertical_lines)
 
     # Harris visualization
-    if (PM.VISUALIZE_HARRIS):
+    if PM.VISUALIZE_HARRIS:
         errors = errors + harris_visualization(frame.copy(), keypoints)
-        if (PM.VISUALIZE_HARRIS_CLUSTERS):
+        if PM.VISUALIZE_HARRIS_CLUSTERS:
             errors = errors + cluster_visualization(keypoint_clusters)
 
     return errors
 
 
 def cluster_visualization(clusters: np.ndarray) -> bool:
-
     colors = ['g.', 'r.', 'b.', 'y.', 'c.']
     for cluster, color in zip(clusters, colors):
         plt.plot(cluster[:, 0], cluster[:, 1], color, alpha=0.5)
     plt.show()
 
-    #plt.plot(points[cluster.labels_ == -1, 0], points[cluster.labels_ == -1, 1], 'k+', alpha=0.1)
+    # plt.plot(points[cluster.labels_ == -1, 0], points[cluster.labels_ == -1, 1], 'k+', alpha=0.1)
 
     return 0
 
 
 def harris_visualization(image: np.ndarray, corners: np.ndarray) -> int:
-
     errors = 0
     for point in corners:
         point = np.int0(point)
         try:
             image = cv2.circle(image, (point[0], point[1]), radius=3, color=(0, 0, 255), thickness=-1)
-            #image[res[:, 1], res[:, 0]] = [0, 0, 255]
-            #image[res[:, 3], res[:, 2]] = [0, 255, 0]
+            # image[res[:, 1], res[:, 0]] = [0, 0, 255]
+            # image[res[:, 3], res[:, 2]] = [0, 255, 0]
         except:
             errors = errors + 1
             # print("A detected keypoint was not part of the image - ignoring point.")
@@ -66,7 +65,6 @@ def harris_visualization(image: np.ndarray, corners: np.ndarray) -> int:
 
 
 def hough_lines_visualization(image: np.ndarray, contours, contours_poly, lines, vertical_lines) -> bool:
-
     empty_image = np.zeros(image.shape, np.uint8)
     hough_image = np.copy(image)
     vertical_hough_image = np.copy(image)
@@ -93,7 +91,6 @@ def hough_lines_visualization(image: np.ndarray, contours, contours_poly, lines,
 
 
 def birds_eye_map(x_array, y_array, left_frame_with_corners, right_frame_with_corners):
-
     # All variables in meter - scale for displaying an image in a higher resolution
     scale = 10
     map_size_x = 100
@@ -211,5 +208,3 @@ def birds_eye_map(x_array, y_array, left_frame_with_corners, right_frame_with_co
     cv2.imshow('Building Corner Localization', vis_image)
 
     return vis_image
-
-

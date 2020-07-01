@@ -1,12 +1,11 @@
 import cv2
 import numpy as np
-from preprocess_frame import preprocess_frame
-import PARAMETERS as PM
-from find_building_contours import detect_keypoints, detect_hough_lines
-from validate_building_contours import get_building_corners, cluster_points_to_buildings, find_external_contours
-from visualization import debug_visualization, building_corner_visualization, birds_eye_map
-from estimate_distances_stereoCam import estimate_distances, Median
-import carla_interface
+from src.preprocess_frame import preprocess_frame
+from src.find_building_contours import detect_keypoints, detect_hough_lines
+from src.validate_building_contours import get_building_corners, cluster_points_to_buildings, find_external_contours
+from src.visualization import debug_visualization, building_corner_visualization, birds_eye_map
+from src.estimate_distances import estimate_distances, Median
+from src import carla_interface, PARAMETERS as PM
 
 
 def process_frame(frame):
