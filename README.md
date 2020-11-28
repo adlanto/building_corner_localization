@@ -5,7 +5,7 @@ This was a project in the lecture modelling and simulation of advanced driver as
 The focus was to evaluate one algorithm in a closed or open loop respectively. 
 
 Due to difficulties in creating a closed loop with CarMaker, the main Simulation environment for the lecture, there is only an open loop available. 
-For a demo see the simple scenario output.avi or simulation_kempten.avi for results with the CarMaker environment.
+For a demo see simulation_kempten.avi for results with the CarMaker environment.
 
 [![Demonstration Video on a CarMaker model of the City of Kempten, Germany](https://github.com/adlanto/building_corner_localization/blob/master/images/sample_image.PNG)](https://github.com/adlanto/building_corner_localization/blob/master/simulation_kempten.avi)
 
