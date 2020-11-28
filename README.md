@@ -10,7 +10,9 @@ For a demo see the simple scenario output.avi or simulation_kempten.avi for resu
 [![Demonstration Video on a CarMaker model of the City of Kempten, Germany](https://github.com/adlanto/building_corner_localization/blob/master/images/sample_image.PNG)](https://github.com/adlanto/building_corner_localization/blob/master/simulation_kempten.avi)
 
 The closed loop was realized with the integration of Carla Simulator - see https://carla.org/
-[![Sample image in the Carla environment.](https://github.com/adlanto/building_corner_localization/blob/master/images/sample_image_carla.jpg)]
+However, the detection on Carla is not very good yet as the parameters were optimized for CarMaker.
+
+![Sample image in the Carla environment.](https://github.com/adlanto/building_corner_localization/blob/master/images/sample_image_carla.jpg)
 
 # Requirements
 The complete system was running with
