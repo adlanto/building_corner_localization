@@ -38,7 +38,9 @@ The complete system was running with
 You can either run the system on a closed loop with Carla or on two Videos recorded for example in CarMaker or in a real environment. Consider to adapt the parameters.py if a different environment is used. 
 
 Create a new conda environment based on the environment file:
+```
 $ conda env create -f environment.yml
+```
 
 If you want to use Carla, install following the documentation at https://carla.readthedocs.io/en/latest/ or follow the video https://www.youtube.com/watch?v=J1F32aVSYaU&ab_channel=sentdex
 
@@ -46,7 +48,9 @@ If you want to use Carla, install following the documentation at https://carla.r
 ## Usage
 
 Run in your Anaconda environment:
+```
 $ main.py
+```
 
 There are different settings that you may want to adapt to your simulation environment:
 - USE_CARLA: Use the Carla simulation environment if installed (Please adapt the path of your installation in carla_inferface.py!)
