@@ -43,8 +43,6 @@ def cluster_visualization(clusters: np.ndarray) -> bool:
         plt.plot(cluster[:, 0], cluster[:, 1], color, alpha=0.5)
     plt.show()
 
-    # plt.plot(points[cluster.labels_ == -1, 0], points[cluster.labels_ == -1, 1], 'k+', alpha=0.1)
-
     return 0
 
 
@@ -58,7 +56,6 @@ def harris_visualization(image: np.ndarray, corners: np.ndarray) -> int:
             # image[res[:, 3], res[:, 2]] = [0, 255, 0]
         except:
             errors = errors + 1
-            # print("A detected keypoint was not part of the image - ignoring point.")
     cv2.imshow('Harris', image)
 
     return errors
@@ -196,15 +193,11 @@ def birds_eye_map(x_array, y_array, left_frame_with_corners, right_frame_with_co
     border_vertical = np.full((height, left_frame_with_corners.shape[1], 3), (159, 187, 160), dtype=np.uint8)
     stereo_camera_images = cv2.vconcat([border_vertical, left_frame_with_corners, border_vertical,
                                         right_frame_with_corners, border_vertical])
-    # cv2.imshow("stereo_camera_images", stereo_camera_images)
     border_horizontal = np.full((map.shape[0], 60, 3), (159, 187, 160), dtype=np.uint8)
-    scaler = map.shape[1] / stereo_camera_images.shape[1]
-    # print(map.shape[1], stereo_camera_images.shape[0], scaler)
     stereo_camera_images = cv2.resize(stereo_camera_images, (stereo_camera_images.shape[1], map.shape[0]))
 
     # Bring all together and show it
     vis_image = cv2.hconcat([border_horizontal, stereo_camera_images, border_horizontal, map, border_horizontal])
-    # cv2.imshow('Birds-Eye-View Map', map)
     cv2.imshow('Building Corner Localization', vis_image)
 
     return vis_image

@@ -49,24 +49,6 @@ def detect_hough_lines(preprocessed_image: np.ndarray) -> np.ndarray:
     for i in range(len(contours)):
         cv2.drawContours(drawing, contours_poly, i, (255,255,255))
 
-    # Idea to create separate images of each subcontour
-    # mask = np.zeros_like(image)  # Create mask where white is what we want, black otherwise
-    # cv2.drawContours(mask, contours, 1, 255, -1)  # Draw filled contour in mask
-    # out = np.zeros_like(image)  # Extract out the object and place into output image
-    # out[mask == 255] = image[mask == 255]
-    # cv2.imshow('test', out)
-    # cv2.imshow('Contours', drawing)
-
-    # new_rect = np.ndarray
-    # for i, rect in enumerate(bound_rect):
-    #     print('rect', rect)
-    #     mask = cv2.copyMakeBorder(canny_image, 1, 1, 1, 1, cv2.BORDER_CONSTANT, 0)
-    #     seed_point = (int(np.around((rect[0] + rect[1]) / 2, decimals=0)), /
-    #     int(np.around((rect[2] + rect[3]) / 2, decimals=0)))
-    #     print(seed_point)
-    #     #if (seed_point)
-    #     cv2.floodFill(canny_image, mask, seed_point, 255)
-
     lines = cv2.HoughLinesP(drawing, PM.HOUGH_RHO, PM.HOUGH_THETA, PM.HOUGH_THRESHOLD, PM.HOUGH_MIN_LINE_LENGTH, PM.HOUGH_MAX_LINE_GAP)
 
     return lines, contours, contours_poly
