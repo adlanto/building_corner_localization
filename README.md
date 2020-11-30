@@ -1,6 +1,6 @@
 # Building Corner Localization
 Localization of EGO vehicle by detection of building corners. Note that the project does not give the exact distances as no camera calibration was available.
-The task of localization is usually divided into two steps. First, the more coarse GNSS localization, which can lack in accuracy due to multipath effects or for example in tunnels were no signal is avalaible. Hereby, other approaches are considered maninly based on the remaining sensors of a autonomously driving vehicle, namely cameras, lidars and radars. The detection of landmarks, in our case in the form of building corners is one approach for refining the coarse GNSS localization. The key idea behind using building corners is the comparably to other objects such as signs or special buildings low complexity to detect them. More in-depth approaches use Deep Convolutional Networks to detect the landmarks, an overview gives https://www.mdpi.com/2075-1702/7/2/25/pdf. 
+The task of localization is usually divided into two steps. First, the more coarse GNSS localization, which can lack in accuracy due to multipath effects or for example in tunnels were no signal is avalaible. Hereby, other approaches are considered maninly based on the remaining sensors of a autonomously driving vehicle, namely cameras, lidars and radars. The detection of landmarks, in our case in the form of building corners is one approach for refining the coarse GNSS localization. The key idea behind using building corners is the comparably to other objects such as signs or special buildings low complexity to detect them. More in-depth approaches use deep convolutional neural networks to detect the landmarks. An overview is provided in: https://www.mdpi.com/2075-1702/7/2/25/pdf. 
 
 ## Table of contents
 * [Overview](#Overview)
@@ -14,7 +14,7 @@ The task of localization is usually divided into two steps. First, the more coar
 The idead behind this work was to evaluate one algorithm of advanced driver assistance systems in a closed or open loop respectively. 
 
 Due to difficulties in creating a closed loop with CarMaker, the main Simulation environment for the lecture, there is only an open loop available. 
-For a demo see simulation_kempten.avi for results with the CarMaker environment.
+For a demo see [simulation_kempten.avi](https://github.com/adlanto/building_corner_localization/blob/master/simulation_kempten.avi) for results with the CarMaker environment.
 
 [![Demonstration Video on a CarMaker model of the City of Kempten, Germany](https://github.com/adlanto/building_corner_localization/blob/master/images/sample_image.PNG)](https://github.com/adlanto/building_corner_localization/blob/master/simulation_kempten.avi)
 
@@ -71,4 +71,4 @@ Furthermore, there are different debugging options available:
 ## Contributors
 This was a project in the lecture modelling and simulation of advanced driver assistance systems @Kempten University of Applied Sciences.
 
-It was developed by Tobias Langes (https://github.com/adlanto) and Volker Manz (https://github.com/maenzinger11).
+It was developed by Tobias Langes [adlanto](https://github.com/adlanto) and Volker Manz [maenzinger11](https://github.com/maenzinger11).
