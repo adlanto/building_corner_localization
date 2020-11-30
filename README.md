@@ -71,4 +71,4 @@ Furthermore, there are different debugging options available:
 ## Contributors
 This was a project in the lecture modelling and simulation of advanced driver assistance systems @Kempten University of Applied Sciences.
 
-It was developed by Tobias Langes [adlanto](https://github.com/adlanto) and Volker Manz [maenzinger11](https://github.com/maenzinger11).
+It was developed by Tobias Langes ([adlanto](https://github.com/adlanto)) and Volker Manz ([maenzinger11](https://github.com/maenzinger11)).
