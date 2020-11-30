@@ -60,8 +60,8 @@ Furthermore, there are different debugging options available:
 - VISUALIZE_BUILDING_CORNERS: Output of the result during runtime
 - DEBUG_VISUALIZATION: Show some important interim results
 - VISUALIZE_HARRIS: Show the results of the Harris corner detection (This uses matplotlib, you have to manually jump to the next image)
--VISUALIZE_HARRIS_CLUSTERS: Show the clustering results (This uses matplotlib, you have to manually jump to the next image)
--VISUALIZE_HOUGH: Show the steps of the hough line detection
+- VISUALIZE_HARRIS_CLUSTERS: Show the clustering results (This uses matplotlib, you have to manually jump to the next image)
+- VISUALIZE_HOUGH: Show the steps of the hough line detection
 
 
 ## Contributors
